@@ -1,0 +1,21 @@
+# Tools installed into the Docker image (same pinned versions as envs/*.yml)
+name: base
+channels:
+  - conda-forge
+  - bioconda
+  - till_sauerwein
+dependencies:
+  - python=3.9
+  - pysam=0.22.1
+  - segemehl=0.3.4
+  - r-base=4.3.3
+  - r-gplots
+  - bioconductor-deseq2=1.42.0
+  - reademption=2.0.4
+  # quality control and helpers
+  - fastqc
+  - multiqc
+  - fastp
+  - samtools
+  - wget
+  - pigz

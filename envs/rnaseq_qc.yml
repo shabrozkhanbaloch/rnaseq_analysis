@@ -1,0 +1,17 @@
+# Conda environment with the quality-control and helper tools.
+#
+# These are kept apart from the "reademption" environment so that updating a
+# QC tool can never change the pinned versions of the analysis pipeline.
+# Create it with:  bash install.sh
+name: rnaseq_qc
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - fastqc        # per-file read quality report
+  - multiqc       # combines all FastQC reports into one page
+  - fastp         # read trimming and filtering
+  - samtools      # inspect and index alignment files
+  - sra-tools     # download reads from the NCBI Sequence Read Archive
+  - pigz          # fast parallel compression
+  - wget          # file downloads
