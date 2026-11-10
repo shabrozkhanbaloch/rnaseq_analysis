@@ -1,0 +1,52 @@
+Species	Statistic	InSPI2_R1	InSPI2_R2	LSP_R1	LSP_R2
+all	No. of input reads	1000000	1000000	1000000	1000000
+all	No. of reads - PolyA detected and removed	324180	741015	447984	847619
+all	No. of reads - Single 3' A removed	202135	58536	174469	29453
+all	No. of reads - Unmodified	473685	200449	377547	122928
+all	No. of reads - Removed as too short	2648	4163	3302	5808
+all	No. of reads - Long enough and used for alignment	997352	995837	996698	994192
+all	Total no. of aligned reads	992998	985557	990125	984629
+all	Total no. of unaligned reads	4354	10280	6573	9563
+all	Total no. of uniquely aligned reads	322786	305016	332066	278996
+all	Total no. of split aligned reads	0	0	0	0
+all	Total no. of multiple aligned reads	670212	680541	658059	705633
+all	Total no. of cross aligned reads	0	0	0	0
+all	Total no. of alignments	4388007	4274292	3869164	3964446
+all	Percentage of aligned reads (compared to no. of input reads)	99.3	98.56	99.01	98.46
+all	Percentage of aligned reads (compared to no. of long enough reads)	99.56	98.97	99.34	99.04
+all	Percentage of uniquely aligned reads (in relation to all aligned reads)	32.51	30.95	33.54	28.34
+all	Percentage of split aligned reads (in relation to all aligned reads)	0.0	0.0	0.0	0.0
+all	Percentage of multiple aligned reads (in relation to all aligned reads)	67.49	69.05	66.46	71.66
+all	Percentage of cross aligned reads (in relation to all aligned reads)	0.0	0.0	0.0	0.0
+Salmonella Typhimurium	Total no. of aligned reads	992998	985557	990125	984629
+Salmonella Typhimurium	Total no. of uniquely aligned reads	322786	305016	332066	278996
+Salmonella Typhimurium	Total no. of split aligned reads	0	0	0	0
+Salmonella Typhimurium	Total no. of multiple aligned reads	670212	680541	658059	705633
+Salmonella Typhimurium	Total no. of cross aligned reads	0	0	0	0
+Salmonella Typhimurium	Total no. of alignments	4388007	4274292	3869164	3964446
+Salmonella Typhimurium	Percentage of aligned reads (compared to no. of input reads)	99.3	98.56	99.01	98.46
+Salmonella Typhimurium	Percentage of aligned reads (compared to no. of long enough reads)	99.56	98.97	99.34	99.04
+Salmonella Typhimurium	Percentage of uniquely aligned reads (in relation to all aligned reads)	32.51	30.95	33.54	28.34
+Salmonella Typhimurium	Percentage of split aligned reads (in relation to all aligned reads)	0.0	0.0	0.0	0.0
+Salmonella Typhimurium	Percentage of multiple aligned reads (in relation to all aligned reads)	67.49	69.05	66.46	71.66
+Salmonella Typhimurium	Percentage of cross aligned reads (in relation to all aligned reads)	0.0	0.0	0.0	0.0
+Salmonella Typhimurium	NC_016810.1 - No. of aligned reads	992237	984924	989066	983992
+Salmonella Typhimurium	NC_016810.1 - No. of uniquely aligned reads	322029	304384	331008	278360
+Salmonella Typhimurium	NC_016810.1 - No. of split aligned reads	0	0	0	0
+Salmonella Typhimurium	NC_016810.1 - No. of multiple aligned reads	670208	680540	658058	705632
+Salmonella Typhimurium	NC_016810.1 - No. of alignments	4387184	4273562	3868048	3963735
+Salmonella Typhimurium	NC_017718.1 - No. of aligned reads	464	445	751	506
+Salmonella Typhimurium	NC_017718.1 - No. of uniquely aligned reads	431	391	712	459
+Salmonella Typhimurium	NC_017718.1 - No. of split aligned reads	0	0	0	0
+Salmonella Typhimurium	NC_017718.1 - No. of multiple aligned reads	33	54	39	47
+Salmonella Typhimurium	NC_017718.1 - No. of alignments	464	446	753	508
+Salmonella Typhimurium	NC_017719.1 - No. of aligned reads	56	56	102	78
+Salmonella Typhimurium	NC_017719.1 - No. of uniquely aligned reads	52	47	99	76
+Salmonella Typhimurium	NC_017719.1 - No. of split aligned reads	0	0	0	0
+Salmonella Typhimurium	NC_017719.1 - No. of multiple aligned reads	4	9	3	2
+Salmonella Typhimurium	NC_017719.1 - No. of alignments	56	56	102	78
+Salmonella Typhimurium	NC_017720.1 - No. of aligned reads	300	228	261	125
+Salmonella Typhimurium	NC_017720.1 - No. of uniquely aligned reads	274	194	247	101
+Salmonella Typhimurium	NC_017720.1 - No. of split aligned reads	0	0	0	0
+Salmonella Typhimurium	NC_017720.1 - No. of multiple aligned reads	26	34	14	24
+Salmonella Typhimurium	NC_017720.1 - No. of alignments	303	228	261	125
