@@ -1,0 +1,18 @@
+# Conda environment for the READemption RNA-seq pipeline.
+#
+# The versions are pinned on purpose: they are the ones used in the course
+# material this repository follows, so everybody gets the same results.
+# Create it with:  bash install.sh   (do not edit unless you know why)
+name: reademption
+channels:
+  - conda-forge
+  - bioconda
+  - till_sauerwein        # the READemption author's channel
+dependencies:
+  - python=3.9
+  - reademption=2.0.4     # the pipeline itself
+  - segemehl=0.3.4        # read aligner used by READemption
+  - pysam=0.22.1          # reads/writes BAM alignment files
+  - r-base=4.3.3          # R, needed for the statistics
+  - bioconductor-deseq2=1.42.0   # differential expression analysis
+  - r-gplots              # plotting helper used by DESeq2 scripts
