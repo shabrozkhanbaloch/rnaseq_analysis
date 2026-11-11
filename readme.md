@@ -19,8 +19,8 @@ been run and checked.
 | # | Analysis | Organism | Reads | Status |
 |---|---|---|---|---|
 | 01 | [READemption example data](01_example_analysis_bacteria) | *Salmonella* Typhimurium SL1344 | single-end | available |
-| 02 | sRNA154 and nitrogen fixation (Prasse et al. 2017) | *Methanosarcina mazei* Gö1 | single-end | coming next |
-| 03 | Response to apigenin and salt (Pérez-Montaño et al. 2016) | *Rhizobium tropici* CIAT 899 | paired-end | planned |
+| 02 | [sRNA154 and nitrogen fixation](02_publication_rna_seq_analysis_archaea) (Prasse et al. 2017) | *Methanosarcina mazei* Gö1 | single-end | available |
+| 03 | Response to apigenin and salt (Pérez-Montaño et al. 2016) | *Rhizobium tropici* CIAT 899 | paired-end | coming next |
 
 ## What you need
 
@@ -103,6 +103,66 @@ To use fewer CPU cores, put `THREADS=4` in front of the command:
 THREADS=4 bash 01_example_analysis_bacteria/example_01_analysis.sh
 ```
 
+### 02 - sRNA154 in *Methanosarcina mazei*
+
+Repeats the RNA-seq analysis of a published paper. The small RNA sRNA154
+helps the archaeon *Methanosarcina mazei* to control nitrogen fixation. The
+analysis compares the normal strain (`wt`, wild type) with a strain in which
+sRNA154 was deleted (`mut`), two replicates each. Needs about 6 GB of disk
+space and about 35 minutes.
+
+```bash
+bash 02_publication_rna_seq_analysis_archaea/rnaseq.sh
+```
+
+The `results` folder has the same kinds of files as example 01, plus
+`multiqc_report.html`, a read-quality report you can open in a web browser.
+
+In our run 88 to 90 % of the 3.8 to 6.8 million reads per sample aligned to
+the genome. Of 2,771 tested genes, 53 changed at least two-fold (`padj`
+below 0.05): 19 higher and 34 lower in the mutant. The genes that drop in
+the mutant include glutamine synthetase and a P-II nitrogen regulator, both
+part of nitrogen metabolism, which fits the role the paper describes for
+sRNA154.
+
+Paper: Prasse et al. 2017, *RNA Biology* 14:1544-1558,
+[doi:10.1080/15476286.2017.1306170](https://doi.org/10.1080/15476286.2017.1306170).
+Data: NCBI BioProject PRJNA338498.
+
+## How to read the scripts
+
+You can run everything without reading the code. If you want to understand
+it, open a script in any text editor and read it from top to bottom: it runs
+in exactly that order, and every step has a note above it.
+
+| You see | It means |
+|---|---|
+| `# some text` | A note for humans. The computer skips it. |
+| `THREADS=12` | Store the value 12 under the name THREADS. |
+| `$THREADS` or `${THREADS}` | Use the stored value here. |
+| `\` at the end of a line | The command continues on the next line. |
+| `--processes 12` | An option: a setting passed to a program. |
+| `if [ ... ]; then ... fi` | Only do the part in the middle if the test is true. |
+| `for x in ...; do ... done` | Repeat the part in the middle once for each item. |
+| `*.pdf` | Every file whose name ends in `.pdf`. |
+| `wget` | Download a file. |
+| `gunzip` | Unpack a `.gz` file. |
+| `cp` / `mv` / `mkdir` | Copy a file / rename or move a file / make a folder. |
+| `conda activate name` | Switch to the set of installed programs called `name`. |
+
+Every analysis follows the same ten steps:
+
+1. Create the project folders
+2. Download the genome and the gene annotation
+3. Download the reads
+4. Check the read quality
+5. Align the reads to the genome
+6. Calculate coverage
+7. Count the reads per gene
+8. Compare the conditions with DESeq2
+9. Draw the plots
+10. Copy the key results to `results`
+
 ## Troubleshooting
 
 **"conda was not found"**
@@ -140,6 +200,7 @@ docker/run_in_docker.sh reademption --version
 ```
 install.sh        installs all software
 01_example_analysis_bacteria/   Salmonella example: script and results
+02_publication_rna_seq_analysis_archaea/   sRNA154 paper: script and results
 envs/             the two conda environment definitions
 docker/           optional Docker image with the same tools
 ```
