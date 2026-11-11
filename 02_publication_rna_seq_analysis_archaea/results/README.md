@@ -375,6 +375,75 @@ Two notes on how the comparison was made:
   measured at 1.98-fold is not called a failure against a published
   2.04-fold.
 
+### The paper's Figure 3, redrawn from our run
+
+Figure 3 is the only figure of the paper that is made from the RNA-seq
+data. It shows the read coverage over six nitrogen-metabolism genes. We
+redrew it from our own run with the script
+[`plot_figure3_coverage.R`](../plot_figure3_coverage.R).
+
+![Read coverage over six nitrogen-metabolism genes, wild type and mutant](figures/09_figure3_coverage.png)
+
+**How to read it.** There is one pair of plots per gene: wild type on top
+(blue) and the mutant without sRNA154 below (orange). The horizontal axis
+is the position on the genome. The height is the number of reads lying on
+that position ("coverage"), so a tall mountain means an active gene. Both
+plots of a pair use the same vertical scale, so the heights can be compared
+directly. The black arrow under each pair marks where the gene lies and in
+which direction it is read. As in the paper, one replicate of each strain
+is shown (replicate 1). The coverage is scaled so that both samples count
+as if they had the same total number of reads.
+
+**What it shows.** In all six genes the orange mountain is clearly lower
+than the blue one: each gene is less active when sRNA154 is missing, as in
+the paper. The fold change under each pair is the result of DESeq2 over
+both replicates, next to the value printed in the paper's figure:
+
+| Gene | Paper | Our run |
+|---|---|---|
+| `glnA1` | 0.16 | 0.13 |
+| `glnA2` | 0.50 | 0.44 |
+| `glnK1` | 0.11 | 0.13 |
+| `amtB1` | 0.35 | 0.33 |
+| `nifH` | 0.43 | 0.42 |
+| `nrpA` | 0.23 | 0.17 |
+
+The vertical scales are also close to the paper's. The paper's axes go up
+to 6,000 reads for `glnA1`, 3,500 for `glnA2`, 3,000 for `glnK1`, 50 for
+`amtB1`, 100 for `nifH` and 80 for `nrpA`; our highest values are about
+5,900, 3,700, 2,800, 25, 65 and 50.
+
+Two things to keep in mind when reading the plots:
+
+- The coverage is uneven along a gene. In `glnA1`, `glnA2` and `nifH` most
+  reads lie at the start of the gene. The fold change is calculated from
+  all reads of the gene, not from the height of the tallest point.
+- `amtB1`, `nifH` and `nrpA` have few reads (note the scales of 25 to 70),
+  so their plots look rougher than those of the highly active genes.
+
+### Which figures of the paper can be reproduced
+
+The paper has seven figures and three tables in its main text. Most of
+them show laboratory experiments, which cannot be repeated from sequencing
+data. This is what each one is made from:
+
+| Paper item | What it shows | Made from | Reproduced here? |
+|---|---|---|---|
+| Figure 1 | Position of sRNA154 on the genome, its promoter, and its read coverage with and without nitrogen | RACE mapping, sequence alignment, RNA-seq of the wild type under two nitrogen conditions | No. All four samples of our dataset were grown under nitrogen limitation. |
+| Figure 2 | sRNA154 is conserved in related *Methanosarcina* species | Structure alignment and prediction programs | No. A separate sequence analysis, not RNA-seq. |
+| Figure 3 | Read coverage over six nitrogen genes, wild type and mutant | The RNA-seq data used here | **Yes**, see above |
+| Figure 4 | How fast the target mRNAs decay | Laboratory (actinomycin D, qRT-PCR) | No, laboratory work |
+| Figure 5 | Amount of NifH protein | Laboratory (western blot) | No, laboratory work |
+| Figure 6 | Predicted binding sites of sRNA154 | Prediction program (IntaRNA) | No. A separate prediction, not RNA-seq. |
+| Figure 7 | sRNA154 binding to target mRNAs | Laboratory (gel shift assay) | No, laboratory work |
+| Table 1 | Fold changes of seven nitrogen genes | RNA-seq, plus a qRT-PCR column | **Yes**, the RNA-seq column: 7 of 7 |
+| Table 2 | Effect of sRNA154 variants on target stability | Laboratory (qRT-PCR) | No, laboratory work |
+| Table 3 | Predicted targets of sRNA154 | Prediction program (IntaRNA) | No. A separate prediction, not RNA-seq. |
+| Table S1 | Complete list of changed genes | RNA-seq | **Yes**: 52 of 62 |
+
+So everything in the paper that is based on this RNA-seq dataset has been
+compared: Table 1, Table S1 and Figure 3.
+
 ### How this run differs from the paper's method
 
 The aim of this example is to **reproduce** the paper: same raw reads, same
@@ -459,6 +528,7 @@ the left.
 | `MA_plots.pdf` | MA plots of section 6, one page per direction of the comparison |
 | `volcano_plots_log2_fold_change_vs_adjusted_p-value.pdf` | Volcano plots of section 6 |
 | `volcano_plots_log2_fold_change_vs_p-value.pdf` | Volcano plots with the uncorrected p-value |
+| `figure3_coverage.pdf` | The paper's Figure 3 redrawn from our run (section 6), made by `plot_figure3_coverage.R` |
 | `figures/` | The pictures shown on this page, made from the PDF files |
 
 ## What to keep in mind
