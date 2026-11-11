@@ -11,6 +11,27 @@ microbial RNA-seq, and follows the course material of
 You do not need to be a programmer to rerun it. If you can open a terminal and
 copy and paste a command, you can follow this page.
 
+## Headline result
+
+Example 02 reruns the RNA-seq analysis of a published paper
+([Prasse et al. 2017](https://doi.org/10.1080/15476286.2017.1306170)) from
+its public raw reads and checks the answer against the paper.
+
+![Volcano plot of example 02: genes that change when sRNA154 is deleted](02_publication_rna_seq_analysis_archaea/results/figures/08_volcano_plot.png)
+
+*Each dot is a gene. Dots far to the left are less active in the mutant
+without sRNA154, dots far to the right more active; the higher a dot, the
+more certain the change.*
+
+- All **7 of 7** nitrogen-metabolism genes in the paper's Table 1 go down in
+  our run too, with fold changes that differ by 0.07 at most.
+- **52 of 62** genes in the paper's complete list (Table S1) are reproduced;
+  9 are not and 1 cannot be compared.
+- Published and reproduced fold changes correlate at r = 0.94.
+- The run uses current software, not the 2017 versions. Every difference
+  from the paper's method is listed on the
+  [results page](02_publication_rna_seq_analysis_archaea/results/README.md).
+
 ## Analyses
 
 The analyses are added to this repository one at a time, each after it has
@@ -139,26 +160,7 @@ Paper: Prasse et al. 2017, *RNA Biology* 14:1544-1558,
 [doi:10.1080/15476286.2017.1306170](https://doi.org/10.1080/15476286.2017.1306170).
 Data: NCBI BioProject PRJNA338498.
 
-## How to read the scripts
-
-You can run everything without reading the code. If you want to understand
-it, open a script in any text editor and read it from top to bottom: it runs
-in exactly that order, and every step has a note above it.
-
-| You see | It means |
-|---|---|
-| `# some text` | A note for humans. The computer skips it. |
-| `THREADS=12` | Store the value 12 under the name THREADS. |
-| `$THREADS` or `${THREADS}` | Use the stored value here. |
-| `\` at the end of a line | The command continues on the next line. |
-| `--processes 12` | An option: a setting passed to a program. |
-| `if [ ... ]; then ... fi` | Only do the part in the middle if the test is true. |
-| `for x in ...; do ... done` | Repeat the part in the middle once for each item. |
-| `*.pdf` | Every file whose name ends in `.pdf`. |
-| `wget` | Download a file. |
-| `gunzip` | Unpack a `.gz` file. |
-| `cp` / `mv` / `mkdir` | Copy a file / rename or move a file / make a folder. |
-| `conda activate name` | Switch to the set of installed programs called `name`. |
+## What every analysis does
 
 Every analysis follows the same ten steps:
 
@@ -172,6 +174,10 @@ Every analysis follows the same ten steps:
 8. Compare the conditions with DESeq2
 9. Draw the plots
 10. Copy the key results to `results`
+
+Every script is commented line by line. New to shell scripts? The page
+[How to read the scripts](docs/how_to_read_the_scripts.md) explains the
+symbols and commands they use.
 
 ## Troubleshooting
 
@@ -205,6 +211,9 @@ docker build -t rnaseq-reademption:2.0.4 docker/
 docker/run_in_docker.sh reademption --version
 ```
 
+The image builds and the tools start, but the analysis scripts have so far
+only been run with the conda setup, not inside Docker.
+
 ## Repository layout
 
 ```
@@ -213,6 +222,8 @@ install.sh        installs all software
 02_publication_rna_seq_analysis_archaea/   sRNA154 paper: script and results
 envs/             the two conda environment definitions
 docker/           optional Docker image with the same tools
+docs/             how to read the scripts (for beginners)
+LICENSE           MIT licence
 ```
 
 ## Credits
@@ -220,3 +231,9 @@ docker/           optional Docker image with the same tools
 - Pipeline: READemption, Förstner et al. 2014, *Bioinformatics*,
   [doi:10.1093/bioinformatics/btu533](https://doi.org/10.1093/bioinformatics/btu533)
 - Course material: Aammar Tufail, *Bioinformatics ka Chilla*
+
+## Licence
+
+The code and documentation in this repository are released under the
+[MIT licence](LICENSE). The sequencing data belong to the authors of the
+original studies and are downloaded from public archives when a script runs.
