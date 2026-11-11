@@ -1,5 +1,0 @@
-Sample	Unique Reads	Duplicate Reads
-mut_R1	967776.0	5020743.0
-mut_R2	1152427.0	5671920.0
-wt_R1	540271.0	3227702.0
-wt_R2	853721.0	3922391.0

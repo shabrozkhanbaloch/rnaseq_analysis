@@ -1,5 +1,0 @@
-Sample	Top overrepresented sequence	Sum of remaining overrepresented sequences
-mut_R1	7.3	28.05
-mut_R2	5.09	26.15
-wt_R1	12.16	29.360000000000003
-wt_R2	4.57	27.759999999999998

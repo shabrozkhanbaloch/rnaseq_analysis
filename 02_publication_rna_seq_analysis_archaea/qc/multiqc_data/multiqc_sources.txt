@@ -1,5 +1,0 @@
-Module	Section	Sample Name	Source
-FastQC	all_sections	mut_R1	/data/rnaseq_analysis_bacteria/02_publication_rna_seq_analysis_archaea/qc/mut_R1_fastqc.zip
-FastQC	all_sections	mut_R2	/data/rnaseq_analysis_bacteria/02_publication_rna_seq_analysis_archaea/qc/mut_R2_fastqc.zip
-FastQC	all_sections	wt_R1	/data/rnaseq_analysis_bacteria/02_publication_rna_seq_analysis_archaea/qc/wt_R1_fastqc.zip
-FastQC	all_sections	wt_R2	/data/rnaseq_analysis_bacteria/02_publication_rna_seq_analysis_archaea/qc/wt_R2_fastqc.zip
