@@ -90,6 +90,8 @@ When it ends with `Finished at: ...`, open the folder
 | `rna_class_sizes.pdf` | Share of reads from protein-coding genes, tRNA and rRNA |
 | `salmonella_aligned_reads.pdf`, `*_reads_length_distributions.pdf` | Alignment and read-length overviews |
 
+**[Read the full explanation of the results and every plot](01_example_analysis_bacteria/results/README.md).**
+
 In our run about 99 % of the one million reads per sample aligned to the
 genome, and 1,055 of the 3,013 tested genes changed at least two-fold
 (`padj` below 0.05): 600 higher in InSPI2 and 455 higher in LSP.
@@ -117,6 +119,8 @@ bash 02_publication_rna_seq_analysis_archaea/rnaseq.sh
 
 The `results` folder has the same kinds of files as example 01, plus
 `multiqc_report.html`, a read-quality report you can open in a web browser.
+
+**[Read the full explanation of the results and every plot](02_publication_rna_seq_analysis_archaea/results/README.md).**
 
 In our run 88 to 90 % of the 3.8 to 6.8 million reads per sample aligned to
 the genome. Of 2,771 tested genes, 53 changed at least two-fold (`padj`
