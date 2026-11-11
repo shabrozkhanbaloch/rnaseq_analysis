@@ -301,5 +301,16 @@ cp "$OUT/${SPECIES}_viz_gene_quanti/"*.pdf results/                   # count ov
 cp "$OUT/${SPECIES}_viz_align/"*.pdf results/                         # alignment plot
 cp "$OUT/read_lengths_viz_align/"*.pdf results/                       # read-length plots
 
+# ----------------------------------------------------------------------------
+# STEP 11 - redraw Figure 3 of the paper from our own run
+# ----------------------------------------------------------------------------
+# Steps 1 to 10 are READemption's standard analysis. This last step is
+# specific to this paper: Figure 3 shows the read coverage over six
+# nitrogen-metabolism genes in wild type and mutant. The R script next to
+# this file draws the same figure from the coverage files of step 6 and
+# writes it to results/. "Rscript" runs a script written in the language R;
+# R is part of the reademption environment.
+Rscript plot_figure3_coverage.R
+
 echo "Finished at: $(date)"
 echo "Key results are in: $(pwd)/results"
