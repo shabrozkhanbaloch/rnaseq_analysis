@@ -30,7 +30,7 @@ more certain the change.*
 - Published and reproduced fold changes correlate at r = 0.94.
 - The paper's one RNA-seq figure (Figure 3, read coverage over six
   nitrogen genes) is redrawn from our run with an
-  [R script](02_publication_rna_seq_analysis_archaea/plot_figure3_coverage.R).
+  [R script](02_publication_rna_seq_analysis_archaea/plot_gene_coverage.R).
 - The run uses current software, not the 2017 versions. Every difference
   from the paper's method is listed on the
   [results page](02_publication_rna_seq_analysis_archaea/results/README.md).
@@ -178,8 +178,8 @@ Every analysis follows the same ten steps:
 9. Draw the plots
 10. Copy the key results to `results`
 
-Example 02 has an eleventh step: an R script redraws Figure 3 of the paper
-from the coverage files.
+Example 02 has an eleventh step: an R script plots the read coverage of
+selected genes, which reproduces Figure 3 of the paper.
 
 Every script is commented line by line. New to shell scripts? The page
 [How to read the scripts](docs/how_to_read_the_scripts.md) explains the
