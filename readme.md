@@ -126,8 +126,9 @@ In our run 88 to 90 % of the 3.8 to 6.8 million reads per sample aligned to
 the genome. Of 2,771 tested genes, 53 changed at least two-fold (`padj`
 below 0.05): 19 higher and 34 lower in the mutant. The genes that drop in
 the mutant include glutamine synthetase and a P-II nitrogen regulator, both
-part of nitrogen metabolism, which fits the role the paper describes for
-sRNA154.
+part of nitrogen metabolism. All seven nitrogen-metabolism genes in the
+paper's Table 1 go down in our run as well, with nearly the same fold
+changes.
 
 Paper: Prasse et al. 2017, *RNA Biology* 14:1544-1558,
 [doi:10.1080/15476286.2017.1306170](https://doi.org/10.1080/15476286.2017.1306170).

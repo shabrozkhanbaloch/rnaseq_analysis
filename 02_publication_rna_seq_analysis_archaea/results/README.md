@@ -24,6 +24,9 @@ numbers.
 - **Does it make sense?** Yes. The clearest losers in the mutant are genes
   of nitrogen metabolism: glutamine synthetase (`glnA`), a P-II nitrogen
   regulator and two ammonium transporters.
+- **Does it match the paper?** Yes. All seven nitrogen genes in the paper's
+  Table 1 go down in our run too, with nearly the same fold changes
+  (section 6).
 
 ## Words used on this page
 
@@ -273,13 +276,44 @@ the genome and belong to the pathway that makes aromatic amino acids. They
 rise together, as would be expected if these neighbouring genes are read
 as one unit.
 
-### What about the nitrogenase genes?
+### Comparison with the paper
 
-Nitrogenase is the enzyme that fixes nitrogen gas. In this run its genes
-(MM_RS03765 to MM_RS03795) have few reads, and none of them shows a
-significant change. So these data show the effect of sRNA154 on glutamine
-synthetase, the P-II regulator and the ammonium transporters, but not on
-nitrogenase itself.
+Table 1 of the paper lists seven nitrogen-metabolism genes that were less
+active in the mutant. The table below puts our numbers next to the paper's.
+"Fold change" here is mutant divided by wild type, so 0.13 means the gene
+has 13 % of its normal activity.
+
+| Gene | What it makes | Paper: fold change | Our run: fold change | Our run: p-value | Our run: padj |
+|---|---|---|---|---|---|
+| `glnK1` (MM_RS03825) | P-II nitrogen regulator | 0.11 | 0.13 | 7.3e-20 | 2.5e-17 |
+| `glnA1` (MM_RS05025) | glutamine synthetase 1 | 0.16 | 0.13 | 6.3e-76 | 1.7e-72 |
+| `nrpA` (MM_RS08860) | activator of the nitrogenase genes | 0.23 | 0.17 | 7.3e-18 | not given |
+| `amtB2` (MM_RS04990) | ammonium transporter | 0.32 | 0.26 | 4.9e-13 | 6.1e-11 |
+| `amtB1` (MM_RS03830) | ammonium transporter | 0.35 | 0.33 | 5.3e-11 | 5.1e-09 |
+| `nifH` (MM_RS03765) | nitrogenase iron protein | 0.43 | 0.42 | 3.9e-05 | not given |
+| `glnA2` (MM_RS16575) | glutamine synthetase 2 | 0.50 | 0.44 | 4.9e-19 | 1.5e-16 |
+
+**All seven genes match.** Each one goes down in the mutant, as in the
+paper, and the fold changes differ by 0.07 at most. The paper also reports
+that about 62 genes changed at least two-fold; our run finds 53 with a
+significant padj, and 57 when significance is ignored.
+
+Small differences are expected. The paper used READemption 0.3.0, segemehl
+0.1.7 and DESeq2 1.4.5; this run uses READemption 2.0.4, segemehl 0.3.4 and
+DESeq2 1.42.0, with a newer version of the genome annotation.
+
+**Why two genes have no padj.** `nrpA` and `nifH` have few reads (about 50
+and 36 on average). DESeq2 sets genes with low counts aside before it
+corrects the p-values, because they can rarely reach significance, and
+writes `NA` instead of a padj. Their uncorrected p-values are still very
+small, and their fold changes match the paper. This is why they are missing
+from the count of 53 genes and from the red dots in the plots, although
+they are two of the most important genes in the paper. When you look for a
+particular gene, check the table itself and not only the padj filter.
+
+The gene names in the paper (for example MM_732) are an older numbering.
+The result table uses the current numbering (MM_RS03825); the annotation
+file lists both.
 
 The notation `1.7e-72` means a decimal point followed by 71 zeros and then
 17: the number after `e-` says how many places the decimal point moves to
@@ -306,9 +340,9 @@ the left.
 
 - There are only **two replicates** per condition. That is the minimum for
   statistics. Three or more make the results more reliable.
-- The gene lists were **not compared one by one** with the tables in the
-  paper. The paper's own analysis used different software versions and
-  settings, so individual numbers can differ.
+- The seven genes of the paper's Table 1 were compared and match (section
+  6). The paper's full list of about 62 genes is in its supplementary
+  table, which was **not compared** gene by gene.
 - sRNA154 itself is not in the gene list, because only protein-coding
   genes, tRNAs and rRNAs were counted.
 - The biological remarks on this page are based on the gene descriptions in
