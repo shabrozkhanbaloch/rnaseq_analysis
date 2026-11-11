@@ -375,28 +375,32 @@ Two notes on how the comparison was made:
   measured at 1.98-fold is not called a failure against a published
   2.04-fold.
 
-### The paper's Figure 3, redrawn from our run
+### Read coverage of the nitrogen genes (the paper's Figure 3)
 
 Figure 3 is the only figure of the paper that is made from the RNA-seq
 data. It shows the read coverage over six nitrogen-metabolism genes. We
-redrew it from our own run with the script
-[`plot_figure3_coverage.R`](../plot_figure3_coverage.R).
+drew the same genes from our own run with the script
+[`plot_gene_coverage.R`](../plot_gene_coverage.R). The genes are listed in
+the table [`genes_to_plot.csv`](../genes_to_plot.csv); to plot other genes,
+edit that table.
 
-![Read coverage over six nitrogen-metabolism genes, wild type and mutant](figures/09_figure3_coverage.png)
+![Read coverage over six nitrogen-metabolism genes, wild type and mutant](figures/09_gene_coverage_wt_vs_mutant.png)
 
-**How to read it.** There is one pair of plots per gene: wild type on top
-(blue) and the mutant without sRNA154 below (orange). The horizontal axis
-is the position on the genome. The height is the number of reads lying on
-that position ("coverage"), so a tall mountain means an active gene. Both
-plots of a pair use the same vertical scale, so the heights can be compared
-directly. The black arrow under each pair marks where the gene lies and in
-which direction it is read. As in the paper, one replicate of each strain
-is shown (replicate 1). The coverage is scaled so that both samples count
+**How to read it.** There is one plot per gene. The wild type is drawn in
+blue and the mutant without sRNA154 in orange, on top of each other, so
+the heights can be compared directly. Where orange covers blue, both
+strains have reads; blue sticking out above orange means the wild type has
+more. The horizontal axis is the position on the genome. The height is the
+number of reads lying on that position ("coverage"), so a tall mountain
+means an active gene. The black arrow under each plot marks where the gene
+lies and in which direction it is read. The paper draws the two strains in
+separate plots, one above the other; the content is the same. As in the
+paper, one replicate of each strain is shown (replicate 1). The coverage is scaled so that both samples count
 as if they had the same total number of reads.
 
 **What it shows.** In all six genes the orange mountain is clearly lower
 than the blue one: each gene is less active when sRNA154 is missing, as in
-the paper. The fold change under each pair is the result of DESeq2 over
+the paper. The fold change in the title of each plot is the result of DESeq2 over
 both replicates, next to the value printed in the paper's figure:
 
 | Gene | Paper | Our run |
@@ -528,7 +532,7 @@ the left.
 | `MA_plots.pdf` | MA plots of section 6, one page per direction of the comparison |
 | `volcano_plots_log2_fold_change_vs_adjusted_p-value.pdf` | Volcano plots of section 6 |
 | `volcano_plots_log2_fold_change_vs_p-value.pdf` | Volcano plots with the uncorrected p-value |
-| `figure3_coverage.pdf` | The paper's Figure 3 redrawn from our run (section 6), made by `plot_figure3_coverage.R` |
+| `gene_coverage_wt_vs_mutant.pdf` | Read coverage of six nitrogen genes, the content of the paper's Figure 3 (section 6), made by `plot_gene_coverage.R` |
 | `figures/` | The pictures shown on this page, made from the PDF files |
 
 ## What to keep in mind
