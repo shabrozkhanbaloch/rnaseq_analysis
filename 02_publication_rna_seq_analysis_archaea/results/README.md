@@ -24,9 +24,10 @@ numbers.
 - **Does it make sense?** Yes. The clearest losers in the mutant are genes
   of nitrogen metabolism: glutamine synthetase (`glnA`), a P-II nitrogen
   regulator and two ammonium transporters.
-- **Does it match the paper?** Yes. All seven nitrogen genes in the paper's
-  Table 1 go down in our run too, with nearly the same fold changes
-  (section 6).
+- **Does it match the paper?** Largely yes. All seven nitrogen genes in the
+  paper's Table 1 go down in our run too, with nearly the same fold
+  changes. Of the paper's complete list of 62 changed genes, 52 are
+  reproduced, 9 are not and 1 cannot be compared (section 6).
 
 ## Words used on this page
 
@@ -294,9 +295,7 @@ has 13 % of its normal activity.
 | `glnA2` (MM_RS16575) | glutamine synthetase 2 | 0.50 | 0.44 | 4.9e-19 | 1.5e-16 |
 
 **All seven genes match.** Each one goes down in the mutant, as in the
-paper, and the fold changes differ by 0.07 at most. The paper also reports
-that about 62 genes changed at least two-fold; our run finds 53 with a
-significant padj, and 57 when significance is ignored.
+paper, and the fold changes differ by 0.07 at most.
 
 Small differences are expected. The paper used READemption 0.3.0, segemehl
 0.1.7 and DESeq2 1.4.5; this run uses READemption 2.0.4, segemehl 0.3.4 and
@@ -315,6 +314,61 @@ The gene names in the paper (for example MM_732) are an older numbering.
 The result table uses the current numbering (MM_RS03825); the annotation
 file lists both.
 
+### Full comparison with the paper's complete gene list
+
+The paper's supplementary Table S1 lists every gene that changed at least
+two-fold: 62 entries (60 protein-coding genes and 2 tRNAs). We compared all
+of them with our run. The complete side-by-side list is in
+[`paper_comparison_table_S1.csv`](paper_comparison_table_S1.csv).
+
+| Outcome | Entries |
+|---|---|
+| **Reproduced**: same direction, and at least 1.5-fold in our run | 52 |
+| **Not reproduced**: little or no change in our run | 9 |
+| **Not comparable**: the gene (MM_0083) no longer exists in the current genome annotation | 1 |
+| Total | 62 |
+
+So 52 of the 61 comparable entries (85 %) are reproduced. For 47 of those
+52, our fold change is within 15 % of the published one, and the same 47
+also pass the two-fold mark in our run. The other five are just below it
+(for example 1.98-fold where the paper has 2.04-fold). Over the 59
+protein-coding genes that could be compared, the published and our log2
+fold changes have a correlation of r = 0.94.
+
+The nine entries that our run does not reproduce:
+
+| Gene (paper / current) | Function given in the paper | Paper: fold change | Our run: fold change | Our run: average reads |
+|---|---|---|---|---|
+| MM_2699 / MM_RS13985 | transposase | 0.20 | 0.90 | 8 |
+| MM_1901 / MM_RS09865 | hypothetical protein | 0.38 | 0.90 | 22 |
+| MM_2833 / MM_RS14695 | ABC transporter ATP-binding protein | 0.46 | 0.83 | 370 |
+| MM_0434 / MM_RS02335 | hypothetical protein | 0.46 | 0.72 | 189 |
+| MM_3340 / MM_RS17345 | hypothetical protein | 0.48 | 0.82 | 116 |
+| MM_0490 / MM_RS02610 | phycocyanin subunit alpha | 2.04 | 1.18 | 73 |
+| MM_2775 / MM_RS14390 | hypothetical protein | 2.07 | 0.99 | 43 |
+| MM_2824 / MM_RS14650 | glucose-6-phosphate dehydrogenase | 2.18 | 1.16 | 572 |
+| MM_0008 / MM_RS00035 | hypothetical protein | 2.78 | 1.02 | 100 |
+
+None of the nine is one of the nitrogen-metabolism genes the paper is
+about. We did not find out why they differ. Likely causes are the newer
+software and the newer genome annotation, in which the borders of some
+genes were redrawn. Two of the nine have very few reads, and the first one
+is a transposase, a gene that exists in several copies and is therefore
+counted differently by different software versions.
+
+Looking the other way round, our run has 53 significant genes with at
+least a two-fold change. Of these, 44 are in the paper's list and 9 are
+not. Those 9 are all borderline, with changes between 2.02 and 2.35-fold.
+
+Two notes on how the comparison was made:
+
+- The paper gives no gene number for the two tRNAs (tRNA-Asp and tRNA-Ile).
+  We matched each to the copy of that tRNA that changes most in our run
+  (fold change 0.43 and 0.49; the paper has 0.45 and 0.48).
+- "Reproduced" uses a 1.5-fold limit instead of two-fold so that a gene
+  measured at 1.98-fold is not called a failure against a published
+  2.04-fold.
+
 The notation `1.7e-72` means a decimal point followed by 71 zeros and then
 17: the number after `e-` says how many places the decimal point moves to
 the left.
@@ -327,6 +381,7 @@ the left.
 | `read_alignment_stats.csv` | All alignment numbers per sample. Opens in Excel or LibreOffice (tab-separated). |
 | `deseq_comp_mut_vs_wt_with_annotation_and_countings.csv` | One row per gene: position, description, raw read counts of the four samples, `log2FoldChange`, `pvalue` and `padj`. This is the main result table. |
 | `deseq_comp_wt_vs_mut_with_annotation_and_countings.csv` | The same comparison the other way round, so every fold change has the opposite sign. |
+| `paper_comparison_table_S1.csv` | Every gene of the paper's supplementary Table S1 next to our result, with a verdict (section 6). |
 | `methanosarcina_aligned_reads.pdf` | Plot of section 2 |
 | `input_reads_length_distributions.pdf`, `processed_reads_length_distributions.pdf` | Plots of section 3, one page per sample |
 | `rna_class_sizes.pdf` | Plot of section 4 |
@@ -340,9 +395,9 @@ the left.
 
 - There are only **two replicates** per condition. That is the minimum for
   statistics. Three or more make the results more reliable.
-- The seven genes of the paper's Table 1 were compared and match (section
-  6). The paper's full list of about 62 genes is in its supplementary
-  table, which was **not compared** gene by gene.
+- The comparison with the paper (section 6) covers every gene in the
+  paper's Table 1 and supplementary Table S1. Nine of the 61 comparable
+  entries are not reproduced, and the reason was not investigated.
 - sRNA154 itself is not in the gene list, because only protein-coding
   genes, tRNAs and rRNAs were counted.
 - The biological remarks on this page are based on the gene descriptions in
