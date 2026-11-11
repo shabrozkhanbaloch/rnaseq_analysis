@@ -16,6 +16,12 @@ numbers.
 - **Why:** the paper this example follows (Prasse et al. 2017) describes
   sRNA154 as a regulator of nitrogen fixation, the ability to use nitrogen
   gas from the air.
+- **Purpose of this example:** to reproduce a published result. We take the
+  paper's public raw reads and run them through the same chain of tools
+  (READemption, segemehl, DESeq2) in their current versions, then check
+  whether we arrive at the paper's findings. The old software versions of
+  2017 are deliberately not installed (see "How this run differs from the
+  paper's method" in section 6).
 - **Data quality:** 88 to 90 % of the reads could be placed on the genome,
   and the replicates agree very well.
 - **Main result:** deleting sRNA154 changes few genes. Of 2,771 genes that
@@ -297,9 +303,9 @@ has 13 % of its normal activity.
 **All seven genes match.** Each one goes down in the mutant, as in the
 paper, and the fold changes differ by 0.07 at most.
 
-Small differences are expected. The paper used READemption 0.3.0, segemehl
-0.1.7 and DESeq2 1.4.5; this run uses READemption 2.0.4, segemehl 0.3.4 and
-DESeq2 1.42.0, with a newer version of the genome annotation.
+Small differences are expected, because the software has changed since
+2017. The section "How this run differs from the paper's method" below
+lists every difference.
 
 **Why two genes have no padj.** `nrpA` and `nifH` have few reads (about 50
 and 36 on average). DESeq2 sets genes with low counts aside before it
@@ -369,6 +375,70 @@ Two notes on how the comparison was made:
   measured at 1.98-fold is not called a failure against a published
   2.04-fold.
 
+### How this run differs from the paper's method
+
+The aim of this example is to **reproduce** the paper: same raw reads, same
+chain of tools, and then a check whether the same genes come out. It is not
+an exact replay. The paper was analysed in 2017 with the software of that
+time. We use the current versions on purpose, because that is what anyone
+repeating the analysis today would install, and a result that only appears
+with one old software version would not be a robust result.
+
+The table lists every step, taken from the paper's Materials and Methods
+and from [`rnaseq.sh`](../rnaseq.sh).
+
+| Step | Paper (2017) | This run | Same? |
+|---|---|---|---|
+| Raw reads | Single-end reads, deposited in a public archive | The same deposited reads, downloaded from ENA | yes |
+| Quality trimming | A separate program (FASTX `fastq_quality_trimmer`), quality cut-off 20 | Done inside READemption, quality cut-off 25 | no |
+| Removal of poly-A tails | yes | yes | yes |
+| Shortest read kept | 12 letters | 12 letters (READemption's default) | yes |
+| READemption | 0.3.0 | 2.0.4 | no |
+| Aligner | segemehl 0.1.7, accuracy setting not stated | segemehl 0.3.4, accuracy 95 % | no |
+| Genome sequence | NC_003901.1 | NC_003901.1 | yes |
+| Gene list (annotation) | NCBI annotation of that time, plus sRNAs and UTRs added by hand | Current NCBI annotation, nothing added by hand | no |
+| Kinds of gene counted | not stated | protein-coding genes, tRNAs, rRNAs | unknown |
+| DESeq2 | 1.4.5 | 1.42.0 | no |
+| A gene counts as changed when | at least two-fold and padj below 0.1 | at least two-fold and padj below 0.05 | no |
+
+What these differences mean:
+
+- **Software versions.** About ten years lie between the versions. The way
+  DESeq2 calculates fold changes and padj was revised in that time, and the
+  aligner places some reads differently. This can move a gene that sits
+  close to the two-fold line to the other side of it.
+- **Annotation.** NCBI has revised the gene list of this genome since 2017.
+  Some gene borders moved and some genes were removed. This is why one gene
+  of the paper (MM_0083) cannot be compared at all.
+- **Significance cut-off.** Ours is stricter than the paper's. We checked
+  whether this matters; see below.
+
+**Check: the paper's cut-off applied to our run.** We filtered our result
+table a second time with the paper's cut-off (padj below 0.1). Nothing was
+recalculated and no result file was replaced: the padj values in the table
+do not depend on the cut-off, only the filter does.
+
+| | Our cut-off (padj below 0.05) | Paper's cut-off (padj below 0.1) |
+|---|---|---|
+| Significant genes | 441 | 594 |
+| Significant and at least two-fold changed | 53 | 53 |
+| of these, more active in the mutant | 19 | 19 |
+| of these, less active in the mutant | 34 | 34 |
+| of these, in the paper's list | 44 | 44 |
+
+The looser cut-off adds 153 significant genes, but every one of them
+changes less than two-fold. The list of 53 two-fold genes is identical with
+both cut-offs. **The cut-off therefore does not explain any difference from
+the paper.**
+
+**What is still open.** For the nine entries that are not reproduced, the
+remaining candidates are the software versions and the annotation. Which of
+them is responsible was not tested. That would need the 2017 versions,
+which are hard to install today and are deliberately left out of this
+project. The conclusion stands without them: with current software, the
+paper's central finding (the nitrogen-metabolism genes go down when sRNA154
+is missing) and 52 of its 62 changed genes are reproduced.
+
 The notation `1.7e-72` means a decimal point followed by 71 zeros and then
 17: the number after `e-` says how many places the decimal point moves to
 the left.
@@ -397,7 +467,10 @@ the left.
   statistics. Three or more make the results more reliable.
 - The comparison with the paper (section 6) covers every gene in the
   paper's Table 1 and supplementary Table S1. Nine of the 61 comparable
-  entries are not reproduced, and the reason was not investigated.
+  entries are not reproduced. The significance cut-off was ruled out as
+  the reason; software versions and annotation were not tested.
+- This run uses newer software than the paper on purpose (section 6, "How
+  this run differs from the paper's method").
 - sRNA154 itself is not in the gene list, because only protein-coding
   genes, tRNAs and rRNAs were counted.
 - The biological remarks on this page are based on the gene descriptions in

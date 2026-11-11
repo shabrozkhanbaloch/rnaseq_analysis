@@ -131,6 +131,10 @@ paper's Table 1 go down in our run as well, with nearly the same fold
 changes, and 52 of the 62 genes in the paper's complete list are
 reproduced.
 
+The aim is to reproduce the paper with current software, not to replay it
+with the 2017 versions. The results page lists every difference between the
+paper's method and this run.
+
 Paper: Prasse et al. 2017, *RNA Biology* 14:1544-1558,
 [doi:10.1080/15476286.2017.1306170](https://doi.org/10.1080/15476286.2017.1306170).
 Data: NCBI BioProject PRJNA338498.
