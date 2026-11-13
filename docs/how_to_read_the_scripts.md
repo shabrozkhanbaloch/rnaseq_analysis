@@ -10,15 +10,17 @@ it.
 | You see | It means |
 |---|---|
 | `# some text` | A note for humans. The computer skips it. |
-| `THREADS=12` | Store the value 12 under the name THREADS. |
-| `$THREADS` or `${THREADS}` | Use the stored value here. |
+| `THREADS=4` | Store the value 4 under the name THREADS. |
+| `THREADS=$(nproc)` | Run the command inside `$( )` and store its answer. `nproc` gives the number of processor cores. |
+| `$THREADS` | Use the stored value here. |
 | `\` at the end of a line | The command continues on the next line. |
-| `--processes 12` | An option: a setting passed to a program. |
+| `--processes 4` | An option: a setting passed to a program. |
 | `if [ ... ]; then ... fi` | Only do the part in the middle if the test is true. |
-| `for x in ...; do ... done` | Repeat the part in the middle once for each item. |
 | `*.pdf` | Every file whose name ends in `.pdf`. |
 | `wget` | Download a file. |
 | `gunzip` | Unpack a `.gz` file. |
+| `a \| b` | Hand the output of command `a` to command `b`. |
+| `> file` | Write the output into `file`. |
 | `cp` / `mv` / `mkdir` | Copy a file / rename or move a file / make a folder. |
 | `conda activate name` | Switch to the set of installed programs called `name`. |
 

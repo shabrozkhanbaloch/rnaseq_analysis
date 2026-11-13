@@ -123,11 +123,10 @@ genome, and 1,055 of the 3,013 tested genes changed at least two-fold
 A gene is usually called differentially expressed when `padj` is below 0.05
 and `log2FoldChange` is above 1 or below -1 (a two-fold change).
 
-To use fewer CPU cores, put `THREADS=4` in front of the command:
-
-```bash
-THREADS=4 bash 01_example_analysis_bacteria/example_01_analysis.sh
-```
+The scripts use all processor cores of the computer. To use fewer, for
+example to keep working during a run, open the script in a text editor and
+change the line `THREADS=$(nproc)` near the top to a number, for example
+`THREADS=4`.
 
 ### 02 - sRNA154 in *Methanosarcina mazei*
 
