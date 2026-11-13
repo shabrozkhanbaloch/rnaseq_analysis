@@ -1,317 +1,296 @@
-#!/usr/bin/env bash
-###############################################################################
-# Example 02 - sRNA154 in the archaeon Methanosarcina mazei Goe1
+#!/bin/bash
+# ===========================================================================
+# Example 02: sRNA154 in Methanosarcina mazei (single-end reads)
+# ===========================================================================
 #
-# WHAT THIS SCRIPT ANSWERS
-#   Which genes change when the small RNA "sRNA154" is deleted?
-#   sRNA154 helps to control nitrogen fixation, so we compare
-#     wt  = wild type (the normal strain)
-#     mut = mutant (the strain where sRNA154 was deleted)
-#   There are two samples (replicates) of each, so four samples in total.
-#   The reads are single-end and stored in FASTQ format.
+# WHAT THIS SCRIPT DOES
+#   It repeats the RNA-seq analysis of a published paper:
+#   Prasse et al. 2017, RNA Biology 14:1544-1558.
+#   The archaeon Methanosarcina mazei has a small RNA called sRNA154 that
+#   helps to control nitrogen fixation. Two strains are compared:
+#       wt    wild type, the normal strain
+#       mut   mutant, the strain in which sRNA154 was deleted
+#   Each strain was done twice (two "replicates": R1 and R2), so there are
+#   four samples. The script finds the genes that are more or less active
+#   in the mutant than in the wild type.
 #
-# THE PAPER
-#   Prasse D, Foerstner KU, Jaeger D, Backofen R, Schmitz RA (2017)
-#   "sRNA154 a newly identified regulator of nitrogen fixation in
-#   Methanosarcina mazei strain Goe1". RNA Biology 14:1544-1558.
-#   https://doi.org/10.1080/15476286.2017.1306170
-#
-# THE DATA
-#   Reads:  NCBI BioProject PRJNA338498, runs SRR4018514 to SRR4018517.
-#           We download them as ready-made FASTQ files from the European
-#           Nucleotide Archive (ENA), which mirrors NCBI.
-#   Genome: NCBI RefSeq assembly GCF_000007065.1 (ASM706v1)
-#
-# HOW TO RUN IT (from the repository folder, after "bash install.sh")
+# HOW TO RUN IT
 #   bash 02_publication_rna_seq_analysis_archaea/rnaseq.sh
 #
-# WHAT YOU NEED
-#   About 6 GB of free disk space and about 35 minutes on 16 CPU cores.
+# HOW LONG IT TAKES
+#   About 35 minutes. It needs about 6 GB of free disk space.
 #
-# WHAT YOU GET (all inside this folder)
-#   READemption_analysis/   everything READemption produces (not in git)
-#   qc/                     read-quality reports (not in git)
-#   results/                the most important tables and plots (in git)
+# HOW TO READ THIS FILE
+#   Lines that start with "#" are notes for people. The computer skips them.
+#   All other lines are commands. They run one after another, from top to
+#   bottom. A "\" at the end of a line means: the command continues on the
+#   next line.
+#   Above every command there is a note with three parts:
+#       What:     what the command does
+#       Why:      why this step is needed
+#       Options:  what the settings after the command mean
+# ===========================================================================
+
+
+# ---------------------------------------------------------------------------
+# Before we start: some settings
 #
-# IF IT STOPS HALFWAY
-#   Run the same command again. Files that are already downloaded are kept.
+# What:  "set -e" tells the computer to stop at the first error.
+# Why:   Without it the script would carry on after a failed step and
+#        produce results that look fine but are wrong.
+# ---------------------------------------------------------------------------
+set -e
+
+# What:  Go into the folder where this script is saved.
+# Why:   All results are then written next to the script, no matter from
+#        which folder you started it.
+cd "$(dirname "$0")"
+
+# What:  The number of processor cores to use. NAME=value stores a value;
+#        later, $NAME puts that value into a command. "nproc" asks the
+#        computer how many cores it has, and $( ... ) puts the answer here.
+# Why:   More cores make the long steps faster, so we use all of them.
+#        If you want to keep working on the computer during the run,
+#        write a smaller number instead, for example: THREADS=4
+THREADS=$(nproc)
+
+# What:  Two web addresses, stored under short names.
+# Why:   The download commands below stay short and readable.
+#        GENOME = where the genome of Methanosarcina mazei is stored (NCBI)
+#        ENA    = where the sequencing reads are stored (European
+#                 Nucleotide Archive)
+GENOME=https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/065/GCF_000007065.1_ASM706v1/GCF_000007065.1_ASM706v1_genomic
+ENA=https://ftp.sra.ebi.ac.uk/vol1/fastq
+
+# What:  Switch on the software that was installed by install.sh.
+# Why:   The programs live in a "conda environment", a separate box of
+#        installed software. "conda activate reademption" opens the box
+#        named reademption. The first line makes the "conda activate"
+#        command available inside a script.
+source "$(conda info --base)/etc/profile.d/conda.sh"
+conda activate reademption
+
+
+# ---------------------------------------------------------------------------
+# STEP 1: Create the project folders
 #
-# HOW TO READ THIS FILE IF YOU ARE NEW TO SHELL SCRIPTS
-#   - A line starting with "#" is a note for humans. The computer skips it.
-#   - NAME=value stores a value under a name. $NAME (or ${NAME}) uses it
-#     again later. Example: THREADS=12 ... --processes "$THREADS"
-#   - A "\" at the end of a line means "this command continues on the next
-#     line". It only makes long commands easier to read.
-#   - The script runs from top to bottom, one step after the other.
-###############################################################################
-
-# Safety switch: stop immediately if any command fails, instead of carrying
-# on with missing or broken files.
-#   -e           stop on the first error
-#   -u           stop if a name is used that was never given a value (a typo)
-#   -o pipefail  also notice errors inside commands joined with "|"
-set -euo pipefail
-
-# ----------------------------------------------------------------------------
-# SETTINGS - the only part you normally need to change
-# ----------------------------------------------------------------------------
-
-# How many CPU cores to use. "${THREADS:-12}" means: use the value of THREADS
-# if you set one, otherwise use 12. To use 4 cores, start the script with:
-#   THREADS=4 bash 02_publication_rna_seq_analysis_archaea/rnaseq.sh
-THREADS="${THREADS:-12}"
-
-# Name of the folder READemption works in.
-PROJECT=READemption_analysis
-
-# A short name for the organism. READemption puts it in front of its folder
-# names, for example "methanosarcina_annotations".
-SPECIES=methanosarcina
-
-# Where the genome and the gene annotation are downloaded from (NCBI), and
-# the name both files start with.
-GENOME_URL=https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/065/GCF_000007065.1_ASM706v1
-GENOME=GCF_000007065.1_ASM706v1_genomic
-
-# Where the reads are downloaded from (ENA).
-ENA_URL=https://ftp.sra.ebi.ac.uk/vol1/fastq
-
-# The four samples, as a list. Each line has two parts joined by a colon:
-#     <where the file is on the ENA server> : <the name we give the sample>
-# The name tells you what the sample is: <condition>_<replicate>.
-RUNS=(
-    "SRR401/004/SRR4018514:wt_R1"     # wild type, replicate 1
-    "SRR401/005/SRR4018515:wt_R2"     # wild type, replicate 2
-    "SRR401/006/SRR4018516:mut_R1"    # sRNA154 deletion mutant, replicate 1
-    "SRR401/007/SRR4018517:mut_R2"    # sRNA154 deletion mutant, replicate 2
-)
-
-# ----------------------------------------------------------------------------
-# PREPARATION
-# ----------------------------------------------------------------------------
-
-# Move into the folder this script is stored in. This way the script works
-# the same no matter which folder you start it from.
-cd "$(dirname "${BASH_SOURCE[0]}")"
-
-# A small helper called "use_env". Writing "use_env reademption" further
-# down switches to the conda environment named "reademption", which is where
-# install.sh put the software. It is written once here so the same four
-# lines do not have to be repeated every time we switch.
+# What:  READemption makes a folder "READemption_analysis" with two
+#        subfolders: "input" (for the files we download) and "output"
+#        (for everything it calculates).
+# Why:   READemption expects every file in a fixed place. Creating the
+#        folders with its own command guarantees the right layout.
+# Options:
+#   --project_path  the name of the folder to create
+#   --species       a short name (methanosarcina) and the full name of the organism
 #
-# The "if" line checks whether conda exists on this computer. Inside the
-# optional Docker image there is no conda (the tools are simply available),
-# so in that case the helper does nothing.
-use_env() {
-    if command -v conda >/dev/null 2>&1; then
-        eval "$(conda shell.bash hook)"   # teach this script the "conda activate" command
-        set +u                            # conda needs the typo check off for a moment ...
-        conda activate "$1"               # "$1" = the name written after use_env
-        set -u                            # ... and here it is switched back on
-    fi
-}
-
-# Print the start time, so you can see afterwards how long the run took.
-echo "Started at: $(date)"
-
-# ----------------------------------------------------------------------------
-# STEP 1 - create the project folders
-# ----------------------------------------------------------------------------
-# "reademption create" makes an empty folder structure:
-#   READemption_analysis/input/    where we put genome, annotation and reads
-#   READemption_analysis/output/   where READemption writes its results
-# --species is given as <short name>="<full name>".
-use_env reademption
-echo "Using $(reademption --version) with $THREADS CPU cores"
-
-# "if [ ! -d ... ]" means: only do this if the folder does NOT exist yet.
-# That is what makes it safe to run the script a second time.
-if [ ! -d "$PROJECT" ]; then
-    reademption create \
-        --project_path "$PROJECT" \
-        --species ${SPECIES}="Methanosarcina mazei"
+# "if [ ! -d ... ]; then ... fi" means: only do this if the folder does not
+# exist yet. So the script can be started a second time without an error.
+# ---------------------------------------------------------------------------
+if [ ! -d READemption_analysis ]; then
+    reademption create --project_path READemption_analysis \
+        --species methanosarcina="Methanosarcina mazei"
 fi
 
-# Short names for the three input folders, so the lines below stay readable.
-REFERENCE_DIR=$PROJECT/input/${SPECIES}_reference_sequences
-ANNOTATION_DIR=$PROJECT/input/${SPECIES}_annotations
-READS_DIR=$PROJECT/input/reads
 
-# ----------------------------------------------------------------------------
-# STEP 2 - download the genome and the annotation
-# ----------------------------------------------------------------------------
-# Genome     (FASTA file, .fa):  the DNA sequence the reads are compared to.
-# Annotation (GFF file, .gff):   a table saying where each gene is located.
+# ---------------------------------------------------------------------------
+# STEP 2: Download the genome and the list of genes
 #
-# "if [ ! -s file ]" means: only do this if the file is missing or empty.
-#   wget    downloads a file (-q = quietly, -O = save it under this name)
-#   gunzip  unpacks a .gz file
-# NCBI calls the genome file ".fna", but READemption expects ".fa", so we
-# save it under the new name straight away.
-if [ ! -s "$REFERENCE_DIR/$GENOME.fa" ]; then
-    wget -q -O "$REFERENCE_DIR/$GENOME.fa.gz" "$GENOME_URL/$GENOME.fna.gz"
-    gunzip "$REFERENCE_DIR/$GENOME.fa.gz"
-fi
-if [ ! -s "$ANNOTATION_DIR/$GENOME.gff" ]; then
-    wget -q -O "$ANNOTATION_DIR/$GENOME.gff.gz" "$GENOME_URL/$GENOME.gff.gz"
-    gunzip "$ANNOTATION_DIR/$GENOME.gff.gz"
-fi
+# What:  Two files are downloaded and unpacked:
+#          .fa   the genome: the complete DNA sequence of the organism
+#          .gff  the annotation: a list that says where each gene lies
+# Why:   The genome is needed to find out where each read comes from
+#        (step 5). The annotation is needed to know which gene that
+#        place belongs to (step 7).
+# How:   wget downloads a file (-q = quietly, "-O -" = pass it on instead
+#        of saving it). The "|" hands the download to gunzip, which unpacks
+#        it. The ">" writes the unpacked text into the file named after it.
+# ---------------------------------------------------------------------------
+wget -q -O - $GENOME.fna.gz | gunzip > READemption_analysis/input/methanosarcina_reference_sequences/GCF_000007065.1_ASM706v1_genomic.fa
+wget -q -O - $GENOME.gff.gz | gunzip > READemption_analysis/input/methanosarcina_annotations/GCF_000007065.1_ASM706v1_genomic.gff
 
-# ----------------------------------------------------------------------------
-# STEP 3 - download the reads (about 1.6 GB)
-# ----------------------------------------------------------------------------
-# "for entry in ..." repeats the lines between "do" and "done" once for each
-# of the four samples in the RUNS list above.
+
+# ---------------------------------------------------------------------------
+# STEP 3: Download the reads (about 1.6 GB)
 #
-# Worked example for the first sample, "SRR401/004/SRR4018514:wt_R1":
-#   run_path = SRR401/004/SRR4018514    (the part before the colon)
-#   library  = wt_R1                    (the part after the colon)
-#   run      = SRR4018514               (the part after the last "/")
-#   reads    = READemption_analysis/input/reads/wt_R1.fastq.gz
-# So the file SRR4018514.fastq.gz is downloaded and saved as wt_R1.fastq.gz.
-# With readable names, every later table and plot shows "wt_R1" instead of
-# an accession number.
-for entry in "${RUNS[@]}"; do
-    run_path="${entry%%:*}"           # keep the text before the colon
-    library="${entry#*:}"             # keep the text after the colon
-    run="${run_path##*/}"             # keep the text after the last "/"
-    reads=$READS_DIR/$library.fastq.gz
+# What:  Four files are downloaded, one per sample.
+# Why:   These are the raw data of the paper. The authors stored them in
+#        a public archive, where every sample has a number (SRR...).
+#        We save each file under a name that says what it is, for example
+#        wt_R1 = wild type, replicate 1.
+# Options:
+#   -q  quietly, do not print progress
+#   -c  continue: if a file is already there, do not download it again
+#   -O  the name under which the file is saved
+# ---------------------------------------------------------------------------
+READS=READemption_analysis/input/reads
 
-    if [ ! -s "$reads" ]; then
-        echo "Downloading $run as $library"
-        # The download is first saved as "<name>.part" and only renamed
-        # (mv) when it is complete. If the internet connection drops, no
-        # half-downloaded file is mistaken for a finished one.
-        # -c lets wget continue a partial download instead of starting over.
-        wget -q -c -O "$reads.part" "$ENA_URL/$run_path/$run.fastq.gz"
-        mv "$reads.part" "$reads"
-    fi
-done
+# wild type, replicate 1 and 2
+wget -q -c -O $READS/wt_R1.fastq.gz  $ENA/SRR401/004/SRR4018514/SRR4018514.fastq.gz
+wget -q -c -O $READS/wt_R2.fastq.gz  $ENA/SRR401/005/SRR4018515/SRR4018515.fastq.gz
 
-# ----------------------------------------------------------------------------
-# STEP 4 - check the quality of the reads
-# ----------------------------------------------------------------------------
-# Always look at read quality before trusting any result.
-#   FastQC   makes one quality report per read file
-#   MultiQC  joins those reports into one page: qc/multiqc_report.html
-# These two tools live in the second environment, "rnaseq_qc".
-# "mkdir -p qc" creates the folder "qc" (and does not complain if it exists).
-# "*.fastq.gz" means: every file whose name ends in .fastq.gz.
-use_env rnaseq_qc
+# mutant without sRNA154, replicate 1 and 2
+wget -q -c -O $READS/mut_R1.fastq.gz $ENA/SRR401/006/SRR4018516/SRR4018516.fastq.gz
+wget -q -c -O $READS/mut_R2.fastq.gz $ENA/SRR401/007/SRR4018517/SRR4018517.fastq.gz
+
+
+# ---------------------------------------------------------------------------
+# STEP 4: Check the quality of the reads
+#
+# What:  FastQC examines every read file and writes a report. MultiQC
+#        joins the four reports into one page: qc/multiqc_report.html
+# Why:   A sequencing machine makes mistakes. Before trusting any result
+#        we look at how good the raw data are.
+# Note:  These two programs are in another environment (rnaseq_qc), so we
+#        switch to it here and switch back afterwards.
+# Options:
+#   --quiet    print only errors
+#   --threads  how many cores to use
+#   --outdir   the folder for the reports
+#   --force    replace an older report if there is one
+# ---------------------------------------------------------------------------
+conda activate rnaseq_qc
 mkdir -p qc
-fastqc --quiet --threads "$THREADS" --outdir qc "$READS_DIR"/*.fastq.gz
+fastqc --quiet --threads $THREADS --outdir qc $READS/*.fastq.gz
 multiqc --quiet --force --outdir qc qc
+conda activate reademption
 
-# ----------------------------------------------------------------------------
-# STEP 5 - clean the reads and align them to the genome
-# ----------------------------------------------------------------------------
-# "Aligning" means finding the place on the genome each read came from.
-# This is the longest step.
+
+# ---------------------------------------------------------------------------
+# STEP 5: Clean the reads and align them to the genome
 #
-#   --project_path       the project folder made in step 1
-#   --processes          how many CPU cores to use
+# What:  First the bad ends of the reads are cut off. Then, for every
+#        read, the program looks for the place on the genome where it
+#        fits. This is called "aligning". It is the longest step.
+# Why:   A read is only a short piece of sequence. Only when we know where
+#        on the genome it comes from can we say which gene it belongs to.
+# Options:
+#   --processes          how many cores to use
 #   --segemehl_accuracy  a read must match the genome in at least 95 % of
-#                        its letters to count as aligned
-#   --poly_a_clipping    cut off runs of A's at the read end; they were
-#                        added in the lab and are not part of the genome
-#   --fastq              the reads are FASTQ files (READemption expects
-#                        FASTA unless told otherwise)
-#   --min_phred_score    cut low-quality letters (quality below 25) off the
-#                        end of each read
-#   --progress           show a progress bar
-use_env reademption
-reademption align \
-    --project_path "$PROJECT" \
-    --processes "$THREADS" \
+#                        its letters
+#   --poly_a_clipping    cut off the row of A letters at the end of a
+#                        read. It was added in the laboratory and is not
+#                        part of the genome.
+#   --fastq              the read files are in FASTQ format
+#   --min_phred_score    cut letters with a quality below 25 off the end
+#                        of each read
+#   --progress           show how far the alignment is
+# ---------------------------------------------------------------------------
+reademption align --project_path READemption_analysis \
+    --processes $THREADS \
     --segemehl_accuracy 95 \
     --poly_a_clipping \
     --fastq \
     --min_phred_score 25 \
     --progress
 
-# ----------------------------------------------------------------------------
-# STEP 6 - calculate coverage
-# ----------------------------------------------------------------------------
-# Coverage = how many reads lie on top of each position of the genome.
-# The result is a set of ".wig" files. Open them in a genome browser such
-# as IGV to look at any gene with your own eyes.
-reademption coverage \
-    --project_path "$PROJECT" \
-    --processes "$THREADS"
 
-# ----------------------------------------------------------------------------
-# STEP 7 - count the reads per gene
-# ----------------------------------------------------------------------------
-# For every gene, count how many reads landed on it. More reads = the gene
-# was more active.
-#   --features  which kinds of annotation entries to count:
-#               CDS  = protein-coding genes
-#               tRNA = transfer RNAs
-#               rRNA = ribosomal RNAs
-reademption gene_quanti \
-    --project_path "$PROJECT" \
-    --processes "$THREADS" \
+# ---------------------------------------------------------------------------
+# STEP 6: Calculate the coverage
+#
+# What:  For every position of the genome, count how many reads lie on
+#        top of it. The result is a set of "coverage files" per sample.
+# Why:   Coverage files can be opened in a genome browser (for example
+#        IGV), where you can look at any gene and see how active it is.
+#        They are for looking; the statistics use the counts of step 7.
+# ---------------------------------------------------------------------------
+reademption coverage --project_path READemption_analysis \
+    --processes $THREADS
+
+
+# ---------------------------------------------------------------------------
+# STEP 7: Count the reads per gene
+#
+# What:  For every gene, count how many reads lie on it.
+# Why:   An active gene produces much RNA, so many reads land on it.
+#        These counts are what step 8 compares between the conditions.
+# Options:
+#   --features  which kinds of gene to count: protein-coding genes (CDS),
+#               transfer RNA (tRNA) and ribosomal RNA (rRNA)
+# ---------------------------------------------------------------------------
+reademption gene_quanti --project_path READemption_analysis \
+    --processes $THREADS \
     --features CDS,tRNA,rRNA
 
-# ----------------------------------------------------------------------------
-# STEP 8 - find the genes that differ between mutant and wild type (DESeq2)
-# ----------------------------------------------------------------------------
-# DESeq2 is a statistics program. It compares the counts of the two
-# conditions and tells us, for every gene, how big the change is and how
-# sure we can be that it is real.
+
+# ---------------------------------------------------------------------------
+# STEP 8: Find the genes that differ between mutant and wild type
 #
-# The three lists below must be in the SAME ORDER. Read them as columns:
-#
-#   --libs        mut_R1.fastq.gz  mut_R2.fastq.gz  wt_R1.fastq.gz  wt_R2.fastq.gz
-#   --conditions  mut              mut              wt              wt
-#   --replicates  1                2                1               2
-#
-#   --libs             the read files, named exactly as in input/reads
-#   --conditions       which condition each file belongs to
-#   --replicates       the replicate number of each file
-#   --libs_by_species  which samples belong to which organism (here all four
-#                      to methanosarcina), written without the file ending
-reademption deseq \
-    --project_path "$PROJECT" \
+# What:  The program DESeq2 compares the counts of step 7 between the
+#        mutant and the wild type.
+# Why:   Counts always differ a little by chance. DESeq2 uses the two
+#        replicates to judge whether a difference is larger than chance.
+#        For every gene it reports how big the change is and how sure
+#        we can be about it.
+# Options:
+#   --libs             the four read files
+#   --conditions       the condition of each file, in the same order
+#   --replicates       the replicate number of each file, same order
+#   --libs_by_species  which samples belong to which organism (here all
+#                      four belong to methanosarcina)
+# ---------------------------------------------------------------------------
+reademption deseq --project_path READemption_analysis \
     --libs mut_R1.fastq.gz,mut_R2.fastq.gz,wt_R1.fastq.gz,wt_R2.fastq.gz \
     --conditions mut,mut,wt,wt \
     --replicates 1,2,1,2 \
-    --libs_by_species ${SPECIES}=mut_R1,mut_R2,wt_R1,wt_R2
+    --libs_by_species methanosarcina=mut_R1,mut_R2,wt_R1,wt_R2
 
-# ----------------------------------------------------------------------------
-# STEP 9 - draw the plots
-# ----------------------------------------------------------------------------
-reademption viz_align --project_path "$PROJECT"         # how many reads aligned
-reademption viz_gene_quanti --project_path "$PROJECT"   # reads per kind of RNA
-reademption viz_deseq --project_path "$PROJECT"         # MA plots and volcano plots
 
-# ----------------------------------------------------------------------------
-# STEP 10 - copy the most important results into one small folder
-# ----------------------------------------------------------------------------
-# READemption's full output is several GB. The files most people want are
-# copied ("cp") into results/, which is small enough to keep in git.
-# "*.csv" and "*.pdf" mean: every file with that ending in the folder.
-OUT=$PROJECT/output
+# ---------------------------------------------------------------------------
+# STEP 9: Draw the plots
+#
+# What:  Three commands, each draws a group of plots as PDF files.
+# Why:   A plot shows at a glance what a table with thousands of rows
+#        cannot: how many reads were aligned, what kind of RNA they come
+#        from, and which genes changed.
+# ---------------------------------------------------------------------------
+# How many reads were aligned, and how long the reads are
+reademption viz_align --project_path READemption_analysis
+
+# How the counts are spread over the kinds of RNA, and how similar the samples are
+reademption viz_gene_quanti --project_path READemption_analysis
+
+# Which genes changed (MA plots and volcano plots)
+reademption viz_deseq --project_path READemption_analysis
+
+
+# ---------------------------------------------------------------------------
+# STEP 10: Copy the most important results into one small folder
+#
+# What:  "cp" copies files. "*.csv" means: every file that ends in .csv.
+# Why:   The folder READemption_analysis is large (several GB). The tables
+#        and plots that most people want are only a few MB. They are
+#        copied into "results", which is small enough to share.
+# ---------------------------------------------------------------------------
+OUTPUT=READemption_analysis/output
 mkdir -p results
-cp qc/multiqc_report.html results/                                    # read-quality report
-cp "$OUT/align/reports_and_stats/read_alignment_stats.csv" results/   # alignment numbers
-cp "$OUT/${SPECIES}_deseq/deseq_with_annotations/"*.csv results/      # DESeq2 gene tables
-cp "$OUT/${SPECIES}_viz_deseq/"*.pdf results/                         # MA and volcano plots
-cp "$OUT/${SPECIES}_viz_gene_quanti/"*.pdf results/                   # count overview plots
-cp "$OUT/${SPECIES}_viz_align/"*.pdf results/                         # alignment plot
-cp "$OUT/read_lengths_viz_align/"*.pdf results/                       # read-length plots
 
-# ----------------------------------------------------------------------------
-# STEP 11 - plot the read coverage of selected genes (the paper's Figure 3)
-# ----------------------------------------------------------------------------
-# Steps 1 to 10 are READemption's standard analysis. This last step is
-# specific to this paper: Figure 3 shows the read coverage over six
-# nitrogen-metabolism genes in wild type and mutant. The R script next to
-# this file draws the same content from the coverage files of step 6 and
-# writes it to results/. Which genes are drawn is set in the table
-# genes_to_plot.csv. "Rscript" runs a script written in the language R;
-# R is part of the reademption environment.
+# the read-quality report of step 4
+cp qc/multiqc_report.html results/
+
+# the alignment numbers of step 5
+cp $OUTPUT/align/reports_and_stats/read_alignment_stats.csv results/
+
+# the gene tables of step 8
+cp $OUTPUT/methanosarcina_deseq/deseq_with_annotations/*.csv results/
+
+# the plots of step 9
+cp $OUTPUT/methanosarcina_viz_align/*.pdf results/
+cp $OUTPUT/read_lengths_viz_align/*.pdf results/
+cp $OUTPUT/methanosarcina_viz_gene_quanti/*.pdf results/
+cp $OUTPUT/methanosarcina_viz_deseq/*.pdf results/
+
+
+# ---------------------------------------------------------------------------
+# STEP 11: Plot the read coverage of selected genes (the paper's Figure 3)
+#
+# What:  The R script next to this file draws, for six nitrogen genes,
+#        how many reads cover each position: wild type against mutant.
+#        "Rscript" runs a script written in the language R.
+# Why:   Steps 1 to 10 are the standard analysis. This step is specific
+#        to this paper: its Figure 3 shows exactly these six genes, so we
+#        draw them from our own run to compare. Which genes are drawn is
+#        set in the table genes_to_plot.csv.
+# ---------------------------------------------------------------------------
 Rscript plot_gene_coverage.R
 
-echo "Finished at: $(date)"
-echo "Key results are in: $(pwd)/results"
+echo "Finished. The key results are in the folder: results"
