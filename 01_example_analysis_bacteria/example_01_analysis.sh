@@ -49,10 +49,12 @@ set -e
 cd "$(dirname "$0")"
 
 # What:  The number of processor cores to use. NAME=value stores a value;
-#        later, $NAME puts that value into a command.
-# Why:   More cores make the long steps faster. Write a smaller number
-#        here if your computer has fewer cores.
-THREADS=12
+#        later, $NAME puts that value into a command. "nproc" asks the
+#        computer how many cores it has, and $( ... ) puts the answer here.
+# Why:   More cores make the long steps faster, so we use all of them.
+#        If you want to keep working on the computer during the run,
+#        write a smaller number instead, for example: THREADS=4
+THREADS=$(nproc)
 
 # What:  Two web addresses, stored under short names.
 # Why:   The download commands below stay short and readable.
