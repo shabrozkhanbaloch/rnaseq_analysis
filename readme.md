@@ -295,7 +295,7 @@ LICENSE           MIT licence
 
 - Pipeline: READemption, Förstner et al. 2014, *Bioinformatics*,
   [doi:10.1093/bioinformatics/btu533](https://doi.org/10.1093/bioinformatics/btu533)
-- Course material: Aammar Tufail, *Bioinformatics ka Chilla*
+- Course material: Dr Aammar Tufail, *Bioinformatics ka Chilla*
 
 ## Licence
 
