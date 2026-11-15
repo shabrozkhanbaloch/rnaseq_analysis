@@ -9,6 +9,8 @@ numbers.
 
 ## The short version
 
+![Overview of example 02: Methanosarcina mazei Gö1, wild type against a mutant without sRNA154, single-end reads; 53 of 2,771 tested genes changed at least two-fold with padj below 0.05; 52 of the paper's 62 genes are reproduced. The numbers are explained in the text below.](figures/00_overview.png)
+
 - **What was compared:** the archaeon *Methanosarcina mazei* Gö1 with and
   without the small RNA sRNA154, two samples (replicates) of each.
   - `wt`: wild type, the normal strain
