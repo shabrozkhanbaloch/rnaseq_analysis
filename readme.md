@@ -215,18 +215,23 @@ Data: public reads, downloaded from the European Nucleotide Archive.
 
 ## What every analysis does
 
-Every analysis follows the same ten steps:
+Every analysis follows the same ten steps, with two exceptions noted below:
+
+![The ten steps of the analysis scripts (plus the eleventh of example 02) in four phases, each with its command and what it gives. The steps are listed as text below.](docs/figures/workflow.png)
 
 1. Create the project folders
 2. Download the genome and the gene annotation
 3. Download the reads
 4. Check the read quality
 5. Align the reads to the genome
-6. Calculate coverage
+6. Calculate the coverage
 7. Count the reads per gene
 8. Compare the conditions with DESeq2
 9. Draw the plots
 10. Copy the key results to `results`
+
+Example 01 skips step 4: its practice reads come without quality values,
+so there is nothing to check.
 
 Example 02 has an eleventh step: an R script plots the read coverage of
 selected genes, which reproduces Figure 3 of the paper.
@@ -282,7 +287,7 @@ install.sh        installs all software
 03_publication_rna_seq_paired_end_rhizobium/   Rhizobium paper: script and results
 envs/             the two conda environment definitions
 docker/           optional Docker image with the same tools
-docs/             how to read the scripts (for beginners)
+docs/             how to read the scripts (for beginners), and the workflow picture
 LICENSE           MIT licence
 ```
 
