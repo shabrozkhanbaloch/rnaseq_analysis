@@ -33,6 +33,11 @@ numbers.
 - **Main result, salt:** 134 protein-coding genes changed at least
   four-fold: 113 became more active and 21 less active. The `nod` genes are
   among the strongest risers, as with apigenin.
+- **Does it match the paper?** For the paper's central finding, yes. The
+  fold changes of the nodulation genes are close to the published ones, and
+  nearly every gene the paper reports as more active is more active in our
+  run too. The paper's long list of genes that become *less* active with
+  salt is only partly reproduced (section 6).
 
 ## Words used on this page
 
@@ -389,6 +394,172 @@ genes make and export the capsule, a layer of sugar chains around the
 cell. The paper reports the same region as switched off by salt ("genes of
 the family bexC/ctrB/kpsE").
 
+### Comparison with the paper: the nodulation genes
+
+Table 2 of the paper lists the fold changes of the 22 `nod` genes. Tables 1
+and 3 add a few more genes. The table below puts our numbers next to the
+paper's. A fold change of 10 means ten times more active; a negative
+number means less active (-2 is half as active). A star marks the genes
+the paper calls significant. The complete list is in
+[`paper_comparison_nod_genes.csv`](paper_comparison_nod_genes.csv).
+
+| Gene | Apigenin: paper | Apigenin: our run | Salt: paper | Salt: our run |
+|---|---|---|---|---|
+| `nodA1` | 8.73* | 7.07 | 13.66* | 10.30 |
+| `nodB` | 11.4* | 10.79 | 19.01* | 15.96 |
+| `nodC` | 6.69* | 7.60 | 12* | 18.10 |
+| `nodS` | 7.53* | 5.96 | 12.89* | 10.99 |
+| `nodU` | 5.39* | 5.03 | 10.18* | 14.46 |
+| `nodI` | 6.59* | 4.38 | 12.48* | 9.19 |
+| `nodJ` | 4.98* | 3.91 | 10.15* | 8.31 |
+| `nodH` | 3.09 | 2.94 | 7.6* | 7.79 |
+| `nodP` | 2.78 | 2.66 | 6.08* | 5.88 |
+| `nodA2` | 10.3* | 16.91 | 9.81* | 10.76 |
+| `hsnT` | 7.27* | 9.48 | 5.94* | 6.12 |
+| `nodF` | 13.39* | 11.60 | 13.43* | 12.33 |
+| `nodE` | 10.37* | 9.81 | 11.94* | 11.03 |
+| `nodM` | 2.43 | 2.85 | 5.85* | 6.87 |
+| `nodA3` | 1.15 | 1.04 | 3.36 | 3.19 |
+| `nodD1` | 1.23 | -1.13 | 1.04 | 1.00 |
+| `nodD2` | -1.25 | -1.08 | 3.01 | 2.47 |
+| `nodD3` | -1.21 | 1.02 | 2.1 | 1.73 |
+| `nodD4` | 1.09 | 1.07 | 1.16 | -1.01 |
+| `nodD5` | -1.12 | -1.17 | -1.09 | -1.15 |
+| `y4wE` | 8.58 | 6.79 | 12.17 | 11.77 |
+| `y4wF` | 3.20 | 2.77 | 7.11 | 8.70 |
+
+**The nodulation genes match.**
+
+- The genes that rise in the paper rise in our run, by similar amounts.
+  The genes that stay flat in the paper (the five `nodD` regulator genes,
+  `nodA3` with apigenin) stay flat in our run.
+- Over the 27 genes that can be compared, the published and our log2 fold
+  changes have a correlation of r = 0.95, for apigenin and for salt alike.
+  For 23 (apigenin) and 24 (salt) of the 27, our fold change is within
+  1.5-fold of the published one.
+- Every gene the paper marks as significant with salt (14) is significant
+  and at least four-fold in our run. With apigenin, 10 of the paper's 11
+  starred genes are at least four-fold in our run and 7 of them are also
+  significant.
+- The paper's observation that the `nod` genes react more strongly to salt
+  than to apigenin holds in our run too.
+
+Genes that could not be compared one to one:
+
+- `nodQ1` and `nodQ2` are two genes in the paper. The current genome
+  annotation lists them as one gene, `nodQ` (RTCIAT899_RS20790). Its fold
+  change in our run is 1.9 with apigenin and 3.5 with salt; the paper has
+  3.25 and 1.28 (apigenin) and 6.39 and 2.54 (salt).
+- RTCIAT899_PB01550, a gene of unknown function from the paper's Table 3,
+  is no longer in the current annotation.
+
+Three genes from the paper's Table 1 differ more clearly: `araC2` (paper
+-8.0 with salt, our run -1.5), `rpsL` with apigenin (paper -1.6, our run
++1.5) and the unnamed gene PB01545 with salt (paper 14, our run 30).
+`araC2` has only 17 fragments on average in our run, too few for a
+reliable number.
+
+### Comparison with the paper: the whole genome
+
+The paper's supplementary files 4 and 5 give a fold change for every gene.
+We compared them with our run, gene by gene. A gene can be compared when
+it has the same start and end position in the paper's annotation and in
+the current one; that is the case for 5,002 of the paper's 6,285 genes.
+
+**How many genes changed.**
+
+| | Paper | Our run |
+|---|---|---|
+| Apigenin: genes changed | 19 (15 up, 4 down) | 7 (7 up, 0 down) |
+| Salt: genes changed | 790 (144 up, 646 down) | 134 (113 up, 21 down) |
+
+The two columns do not use the same rule. The paper asks for a four-fold
+change and a padj below 0.7, which is hardly a filter at all. We ask for a
+four-fold change and a padj below 0.05. With our stricter padj limit
+applied to the paper's own table, the paper has 7 genes for apigenin, all
+of them more active, which is the same count as ours.
+
+**Do the paper's genes change in our run?** The table takes every gene
+with a four-fold change in the paper's table that can be compared, and
+asks whether it changes in the same direction and at least two-fold in our
+run.
+
+| Genes in the paper's table | Can be compared | Same direction and at least two-fold in our run |
+|---|---|---|
+| Apigenin, more active (four-fold) | 16 | 16 |
+| Apigenin, less active (four-fold) | 54 | 0 |
+| Salt, more active (four-fold) | 131 | 130 |
+| Salt, less active (four-fold) | 482 | 93 |
+
+- **Genes that become more active are reproduced almost completely**: 16
+  of 16 for apigenin and 130 of 131 for salt.
+- **Genes that become less active are mostly not reproduced**: none of 54
+  for apigenin and 93 of 482 for salt. The capsule region on plasmid C is
+  among the 93.
+- Looking the other way round: of our 134 salt genes, 119 can be compared
+  and 100 of those have a four-fold change in the paper's table.
+- Over all genes with at least 50 fragments on average (1,653 genes), the
+  published and our log2 fold changes have a correlation of r = 0.67 for
+  apigenin and r = 0.75 for salt.
+
+**Why the less-active genes differ.** We did not find out. What we can
+say:
+
+- The 54 "less active" apigenin genes are not counted by the paper either:
+  only 4 of them pass the paper's own rule. So for apigenin the
+  disagreement is about genes that neither analysis calls changed.
+- For salt the disagreement is real. The paper reports 646 genes as
+  switched off, our run 21.
+- The method is different (see the next section). In particular, the paper
+  counts only reads that fit one place on the genome, with a different
+  aligner and a different counting program, and it normalises the samples
+  differently. With more than 90 % ribosomal RNA in the data, such
+  differences can have a large effect.
+- Our run has little data per gene (section 4). Of the 482 switched-off
+  genes that can be compared, 352 have too few fragments in our run to be
+  tested at all (half of the 482 have fewer than 23 fragments on average).
+  Of the 131 switched-on genes, only 7 were not tested.
+
+### Which figures and tables of the paper can be reproduced
+
+| Paper item | What it shows | Made from | Reproduced here? |
+|---|---|---|---|
+| Table 1 | 20 genes measured by RNA-seq and by qRT-PCR | RNA-seq and laboratory (qRT-PCR) | **Yes**, the RNA-seq columns (in `paper_comparison_nod_genes.csv`) |
+| Table 2 | Fold changes of the 22 `nod` genes | RNA-seq | **Yes**, see above |
+| Table 3 | Genes behind the ten "nod boxes" | Sequence search plus RNA-seq fold changes | Partly: the fold changes of the `nod`, `y4wEF` and PB01545 genes |
+| Figure 1 | Number and location of the changed genes | RNA-seq | **Yes**, as numbers: the tables in "The numbers" above |
+| Figure 2 | Overlap of the apigenin and salt gene lists | RNA-seq | Partly: all 7 of our apigenin genes are also in our salt list |
+| Figure 3 | Biological processes of the changed genes (Gene Ontology) | RNA-seq plus a database of gene functions | No. Needs a separate enrichment analysis. |
+| Figure 4 | Circular map of the fold changes on all four replicons | RNA-seq | As numbers only, in the result tables |
+| Figure 5 | Alignment of the nod box sequences | Sequence search | No. A separate sequence analysis, not RNA-seq. |
+| Figure 6 | Model of the cell's response to salt | A drawing that sums up the findings | No, not a data figure |
+| Additional files 4 and 5 | Fold change of every gene | RNA-seq | **Yes**, see "the whole genome" above |
+
+### How this run differs from the paper's method
+
+The aim of this example is to **reproduce** the paper's findings from its
+public raw reads. It is not a replay of the paper's method: the paper used
+a different chain of programs. The table lists every step, taken from the
+paper's Materials and Methods and from [`rnaseq.sh`](../rnaseq.sh).
+
+| Step | Paper (2016) | This run | Same? |
+|---|---|---|---|
+| Raw reads | Paired-end reads, deposited in a public archive | The same deposited reads, downloaded from ENA | yes |
+| Aligner | "Life Technologies mapping algorithm version 1.3" | segemehl 0.3.4 (inside READemption 2.0.4), accuracy 95 % | no |
+| Removal of low-quality reads | Picard Tools 1.83 | Inside READemption, quality cut-off 25; no read was changed (section 3) | no |
+| Genome sequence | *R. tropici* CIAT 899, CP004015 to CP004018 | The same genome, RefSeq version (NC_020059 to NC_020062) | yes |
+| Gene list (annotation) | Annotation of that time, 6,289 genes | Current NCBI annotation, 6,409 genes | no |
+| Counting | htseq 0.5.4p3, only reads that fit one place | READemption `gene_quanti`; a fragment that fits several places is shared between them | no |
+| Statistics | The Methods name edgeR 3.2.4; the supplementary files name DESeq2 | DESeq2 1.42.0 | unclear |
+| A gene counts as changed when | at least four-fold and padj below 0.7 | at least four-fold and padj below 0.05 | no |
+
+One more difference concerns the amount of data. The paper's
+supplementary file 1 lists 54 to 211 million mapped reads per sample. The
+public archive holds 10 to 29 million read pairs per sample, the numbers
+in section 1. We could not find out where this difference comes from. The
+archive also holds a third, small file of unpaired reads for every sample,
+which this analysis does not use.
+
 The notation `1.7e-07` means a decimal point followed by 6 zeros and then
 17: the number after `e-` says how many places the decimal point moves to
 the left.
@@ -404,6 +575,7 @@ the left.
 | `deseq_comp_salt_vs_control_with_annotation_and_countings.csv` | The same for salt. |
 | `deseq_comp_apigenin_vs_salt_with_annotation_and_countings.csv` | The third comparison: apigenin against salt. |
 | `deseq_comp_control_vs_apigenin_...`, `deseq_comp_control_vs_salt_...`, `deseq_comp_salt_vs_apigenin_...` | The same three comparisons the other way round, so every fold change has the opposite sign. |
+| `paper_comparison_nod_genes.csv` | The genes of the paper's Tables 1 to 3 next to our result (section 6). |
 | `rhizobium_aligned_reads.pdf` | Plot of section 2 |
 | `input_reads_length_distributions.pdf`, `processed_reads_length_distributions.pdf` | Plots of section 3, one page per sample |
 | `rna_class_sizes.pdf` | Plot of section 4 |
@@ -422,6 +594,11 @@ the left.
   roughly (section 5). Three or more would make the results more reliable.
 - A gene that is not significant here is not proven unchanged. In the salt
   comparison 3,979 of 6,409 genes had too few fragments to be tested.
+- The paper's genes that become more active are reproduced; most of its
+  genes that become less active with salt are not, and the reason was not
+  found (section 6).
+- The method differs from the paper's in nearly every step (section 6,
+  "How this run differs from the paper's method").
 - The correlation values in the scatter plots are misleading in this
   dataset (section 5).
 - The biological remarks on this page are based on the gene descriptions in
