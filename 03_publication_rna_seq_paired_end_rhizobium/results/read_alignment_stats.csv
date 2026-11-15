@@ -1,0 +1,52 @@
+Species	Statistic	apigenin_R1	apigenin_R2	control_R1	control_R2	salt_R1	salt_R2
+all	No. of input reads	57110120	23764962	53474836	22689408	49063100	20568574
+all	No. of reads - PolyA detected and removed	0	0	0	0	0	0
+all	No. of reads - Single 3' A removed	0	0	0	0	0	0
+all	No. of reads - Unmodified	57110120	23764962	53474836	22689408	49063100	20568574
+all	No. of reads - Removed as too short	0	0	0	0	0	0
+all	No. of reads - Long enough and used for alignment	57110120	23764962	53474836	22689408	49063100	20568574
+all	Total no. of aligned reads	52897576	22965920	49594269	21938667	45557477	19839955
+all	Total no. of unaligned reads	4212544	799040	3880567	750741	3505623	728619
+all	Total no. of uniquely aligned reads	1967323	1426247	1408880	1657387	813182	807301
+all	Total no. of split aligned reads	0	0	0	0	0	0
+all	Total no. of multiple aligned reads	50930253	21539673	48185389	20281280	44744295	19032654
+all	Total no. of cross aligned reads	0	0	0	0	0	0
+all	Total no. of alignments	252144233	108340251	238272493	102361930	220842033	95267089
+all	Percentage of aligned reads (compared to no. of input reads)	92.62	96.64	92.74	96.69	92.85	96.46
+all	Percentage of aligned reads (compared to no. of long enough reads)	92.62	96.64	92.74	96.69	92.85	96.46
+all	Percentage of uniquely aligned reads (in relation to all aligned reads)	3.72	6.21	2.84	7.55	1.78	4.07
+all	Percentage of split aligned reads (in relation to all aligned reads)	0.0	0.0	0.0	0.0	0.0	0.0
+all	Percentage of multiple aligned reads (in relation to all aligned reads)	96.28	93.79	97.16	92.45	98.22	95.93
+all	Percentage of cross aligned reads (in relation to all aligned reads)	0.0	0.0	0.0	0.0	0.0	0.0
+Rhizobium tropici	Total no. of aligned reads	52897576	22965920	49594269	21938667	45557477	19839955
+Rhizobium tropici	Total no. of uniquely aligned reads	1967323	1426247	1408880	1657387	813182	807301
+Rhizobium tropici	Total no. of split aligned reads	0	0	0	0	0	0
+Rhizobium tropici	Total no. of multiple aligned reads	50930253	21539673	48185389	20281280	44744295	19032654
+Rhizobium tropici	Total no. of cross aligned reads	0	0	0	0	0	0
+Rhizobium tropici	Total no. of alignments	252144233	108340251	238272493	102361930	220842033	95267089
+Rhizobium tropici	Percentage of aligned reads (compared to no. of input reads)	92.62	96.64	92.74	96.69	92.85	96.46
+Rhizobium tropici	Percentage of aligned reads (compared to no. of long enough reads)	92.62	96.64	92.74	96.69	92.85	96.46
+Rhizobium tropici	Percentage of uniquely aligned reads (in relation to all aligned reads)	3.72	6.21	2.84	7.55	1.78	4.07
+Rhizobium tropici	Percentage of split aligned reads (in relation to all aligned reads)	0.0	0.0	0.0	0.0	0.0	0.0
+Rhizobium tropici	Percentage of multiple aligned reads (in relation to all aligned reads)	96.28	93.79	97.16	92.45	98.22	95.93
+Rhizobium tropici	Percentage of cross aligned reads (in relation to all aligned reads)	0.0	0.0	0.0	0.0	0.0	0.0
+Rhizobium tropici	NC_020059.1 - No. of aligned reads	52381306	22489258	49252199	21335420	45392171	19629378
+Rhizobium tropici	NC_020059.1 - No. of uniquely aligned reads	1457742	956906	1070964	1064208	649860	598154
+Rhizobium tropici	NC_020059.1 - No. of split aligned reads	0	0	0	0	0	0
+Rhizobium tropici	NC_020059.1 - No. of multiple aligned reads	50923564	21532352	48181235	20271212	44742311	19031224
+Rhizobium tropici	NC_020059.1 - No. of alignments	251601965	107840606	237912027	101727207	220667935	95050719
+Rhizobium tropici	NC_020060.1 - No. of aligned reads	33622	31548	25532	43556	6239	4405
+Rhizobium tropici	NC_020060.1 - No. of uniquely aligned reads	32694	30393	24740	42008	5805	4197
+Rhizobium tropici	NC_020060.1 - No. of split aligned reads	0	0	0	0	0	0
+Rhizobium tropici	NC_020060.1 - No. of multiple aligned reads	928	1155	792	1548	434	208
+Rhizobium tropici	NC_020060.1 - No. of alignments	33660	31571	25544	43572	6242	4409
+Rhizobium tropici	NC_020061.1 - No. of aligned reads	91292	90750	46413	111363	36580	37371
+Rhizobium tropici	NC_020061.1 - No. of uniquely aligned reads	85840	85374	42962	103888	34983	36535
+Rhizobium tropici	NC_020061.1 - No. of split aligned reads	0	0	0	0	0	0
+Rhizobium tropici	NC_020061.1 - No. of multiple aligned reads	5452	5376	3451	7475	1597	836
+Rhizobium tropici	NC_020061.1 - No. of alignments	103811	103840	54422	130275	39491	39228
+Rhizobium tropici	NC_020062.1 - No. of aligned reads	399419	359405	276701	454733	126440	171027
+Rhizobium tropici	NC_020062.1 - No. of uniquely aligned reads	391047	353574	270214	447283	122534	168415
+Rhizobium tropici	NC_020062.1 - No. of split aligned reads	0	0	0	0	0	0
+Rhizobium tropici	NC_020062.1 - No. of multiple aligned reads	8372	5831	6487	7450	3906	2612
+Rhizobium tropici	NC_020062.1 - No. of alignments	404797	364234	280500	460876	128365	172733
