@@ -9,6 +9,8 @@ If you run the script yourself you should get the same numbers.
 
 ## The short version
 
+![Overview of example 01: Salmonella Typhimurium SL1344, InSPI2 against LSP, single-end reads; 1,055 of 3,013 tested genes changed at least two-fold with padj below 0.05. The numbers are explained in the text below.](figures/00_overview.png)
+
 - **What was compared:** *Salmonella* Typhimurium grown in two media, with two
   samples (replicates) of each.
   - `InSPI2`: a medium that imitates the inside of a host cell and switches
