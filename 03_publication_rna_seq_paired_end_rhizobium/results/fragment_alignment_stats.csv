@@ -1,0 +1,48 @@
+Species	Statistic	apigenin_R1	apigenin_R2	control_R1	control_R2	salt_R1	salt_R2
+all	No. of input reads	57110120	23764962	53474836	22689408	49063100	20568574
+all	No. of reads - PolyA detected and removed	0	0	0	0	0	0
+all	No. of reads - Single 3' A removed	0	0	0	0	0	0
+all	No. of reads - Unmodified	57110120	23764962	53474836	22689408	49063100	20568574
+all	No. of reads - Removed as too short	0	0	0	0	0	0
+all	No. of reads - Long enough and used for alignment	57110120	23764962	53474836	22689408	49063100	20568574
+all	Total no. of aligned fragments	26449154	11487082	24798584	10971910	22782207	9922808
+all	Total no. of unaligned reads	4212544	799040	3880567	750741	3505623	728619
+all	Total no. of uniquely aligned fragments	983798	714632	704338	827954	406665	404790
+all	Total no. of split aligned fragments	0	0	0	0	0	0
+all	Total no. of multiple aligned fragments	25465356	10772450	24094246	10143956	22375542	9518018
+all	Total no. of cross aligned fragments	0	0	0	0	0	0
+all	Total no. of alignments	76821959	32815261	72487193	31074137	67118148	28744356
+all	Percentage of uniquely aligned fragments (in relation to all aligned fragments)	3.72	6.22	2.84	7.55	1.79	4.08
+all	Percentage of split aligned fragments (in relation to all aligned fragments)	0.0	0.0	0.0	0.0	0.0	0.0
+all	Percentage of multiple aligned fragments (in relation to all aligned fragments)	96.28	93.78	97.16	92.45	98.21	95.92
+all	Percentage of cross aligned fragments (in relation to all aligned fragments)	0.0	0.0	0.0	0.0	0.0	0.0
+Rhizobium tropici	Total no. of aligned fragments	26449154	11487082	24798584	10971910	22782207	9922808
+Rhizobium tropici	Total no. of uniquely aligned fragments	983798	714632	704338	827954	406665	404790
+Rhizobium tropici	Total no. of split aligned fragments	0	0	0	0	0	0
+Rhizobium tropici	Total no. of multiple aligned fragments	25465356	10772450	24094246	10143956	22375542	9518018
+Rhizobium tropici	Total no. of cross aligned fragments	0	0	0	0	0	0
+Rhizobium tropici	Total no. of alignments	76821959	32815261	72487193	31074137	67118148	28744356
+Rhizobium tropici	Percentage of uniquely aligned fragments (in relation to all aligned fragments)	3.72	6.22	2.84	7.55	1.79	4.08
+Rhizobium tropici	Percentage of split aligned fragments (in relation to all aligned fragments)	0.0	0.0	0.0	0.0	0.0	0.0
+Rhizobium tropici	Percentage of multiple aligned fragments (in relation to all aligned fragments)	96.28	93.78	97.16	92.45	98.21	95.92
+Rhizobium tropici	Percentage of cross aligned fragments (in relation to all aligned fragments)	0.0	0.0	0.0	0.0	0.0	0.0
+Rhizobium tropici	NC_020059.1 - No. of aligned fragments	26191073	11248438	24627451	10670917	22699344	9817138
+Rhizobium tropici	NC_020059.1 - No. of uniquely aligned fragments	728601	479129	535083	531272	324755	299739
+Rhizobium tropici	NC_020059.1 - No. of split aligned fragments	0	0	0	0	0	0
+Rhizobium tropici	NC_020059.1 - No. of multiple aligned fragments	25462472	10769309	24092368	10139645	22374589	9517399
+Rhizobium tropici	NC_020059.1 - No. of alignments	76557327	32570913	72311112	30765395	67032975	28637142
+Rhizobium tropici	NC_020060.1 - No. of aligned fragments	16760	15805	12709	21733	3073	2219
+Rhizobium tropici	NC_020060.1 - No. of uniquely aligned fragments	16365	15259	12382	21004	2920	2117
+Rhizobium tropici	NC_020060.1 - No. of split aligned fragments	0	0	0	0	0	0
+Rhizobium tropici	NC_020060.1 - No. of multiple aligned fragments	395	546	327	729	153	102
+Rhizobium tropici	NC_020060.1 - No. of alignments	16768	15808	12709	21733	3074	2223
+Rhizobium tropici	NC_020061.1 - No. of aligned fragments	45279	45079	23033	55097	18267	18657
+Rhizobium tropici	NC_020061.1 - No. of uniquely aligned fragments	43013	42855	21550	51995	17544	18352
+Rhizobium tropici	NC_020061.1 - No. of split aligned fragments	0	0	0	0	0	0
+Rhizobium tropici	NC_020061.1 - No. of multiple aligned fragments	2266	2224	1483	3102	723	305
+Rhizobium tropici	NC_020061.1 - No. of alignments	47171	47070	24268	57996	18721	18889
+Rhizobium tropici	NC_020062.1 - No. of aligned fragments	198976	179929	137787	227037	62743	85619
+Rhizobium tropici	NC_020062.1 - No. of uniquely aligned fragments	195819	177389	135323	223683	61446	84582
+Rhizobium tropici	NC_020062.1 - No. of split aligned fragments	0	0	0	0	0	0
+Rhizobium tropici	NC_020062.1 - No. of multiple aligned fragments	3157	2540	2464	3354	1297	1037
+Rhizobium tropici	NC_020062.1 - No. of alignments	200693	181470	139104	229013	63378	86102
