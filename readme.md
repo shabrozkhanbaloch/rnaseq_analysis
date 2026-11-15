@@ -44,7 +44,7 @@ been run and checked.
 |---|---|---|---|---|
 | 01 | [READemption example data](01_example_analysis_bacteria) | *Salmonella* Typhimurium SL1344 | single-end | available |
 | 02 | [sRNA154 and nitrogen fixation](02_publication_rna_seq_analysis_archaea) (Prasse et al. 2017) | *Methanosarcina mazei* Gö1 | single-end | available |
-| 03 | Response to apigenin and salt (Pérez-Montaño et al. 2016) | *Rhizobium tropici* CIAT 899 | paired-end | coming next |
+| 03 | [Response to apigenin and salt](03_publication_rna_seq_paired_end_rhizobium) (Pérez-Montaño et al. 2016) | *Rhizobium tropici* CIAT 899 | paired-end | available |
 
 ## What you need
 
@@ -53,6 +53,9 @@ been run and checked.
 - An **internet connection**.
 - About **5 GB** of free disk space for the software, plus space for the data
   of each analysis.
+- Examples 01 and 02 run on an ordinary laptop. Example 03 is much larger:
+  it needs about 60 GB of disk space and much memory (see its section
+  below).
 - **conda**. If you do not have it, `install.sh` tells you how to get it.
 
 ## Installation
@@ -162,6 +165,54 @@ Paper: Prasse et al. 2017, *RNA Biology* 14:1544-1558,
 [doi:10.1080/15476286.2017.1306170](https://doi.org/10.1080/15476286.2017.1306170).
 Data: NCBI BioProject PRJNA338498.
 
+### 03 - *Rhizobium tropici* with apigenin and with salt
+
+Repeats the RNA-seq analysis of a second published paper, this time with
+**paired-end** reads: every piece of RNA was read from both ends. The
+bacterium *Rhizobium tropici* lives in the root nodules of beans. The
+analysis compares three conditions, two replicates each: normal medium
+(`control`), medium with the plant signal apigenin (`apigenin`) and medium
+with extra salt (`salt`).
+
+```bash
+bash 03_publication_rna_seq_paired_end_rhizobium/rnaseq.sh
+```
+
+This example is much larger than the first two:
+
+| | Example 03 needs |
+|---|---|
+| Time | about 10 to 12 hours on a laptop with 16 processor cores |
+| Disk space | about 60 GB |
+| Memory | about 70 GB when all six samples are handled together (16 cores) |
+
+On a computer with less memory, open the script in a text editor and
+change the line `THREADS=$(nproc)` near the top to `THREADS=2`. The run
+then needs about 32 GB of memory and takes longer. The reason: with
+paired-end reads, one step keeps a list of all read names of a sample in
+memory, about 16 GB for each large sample.
+
+The `results` folder has the same kinds of files as example 02, plus
+`fragment_alignment_stats.csv`, the alignment numbers counted in read pairs.
+
+**[Read the full explanation of the results and every plot](03_publication_rna_seq_paired_end_rhizobium/results/README.md).**
+
+In our run 93 to 97 % of the reads aligned to the genome, but more than
+90 % of them come from ribosomal RNA. With apigenin, 7 genes changed
+(`padj` below 0.05), all of them at least four-fold more active and all of
+them nodulation (`nod`) genes on the symbiotic plasmid. With salt, 134
+genes changed at least four-fold: 113 more active and 21 less active, and
+the `nod` genes rise as well. This is the paper's central finding.
+
+Compared with the paper, the fold changes of the nodulation genes correlate
+at r = 0.95, and nearly every gene the paper reports as more active is more
+active in our run too. Most of the genes the paper reports as less active
+with salt are not reproduced; the results page describes this openly.
+
+Paper: Pérez-Montaño et al. 2016, *BMC Genomics* 17:198,
+[doi:10.1186/s12864-016-2543-3](https://doi.org/10.1186/s12864-016-2543-3).
+Data: public reads, downloaded from the European Nucleotide Archive.
+
 ## What every analysis does
 
 Every analysis follows the same ten steps:
@@ -179,6 +230,9 @@ Every analysis follows the same ten steps:
 
 Example 02 has an eleventh step: an R script plots the read coverage of
 selected genes, which reproduces Figure 3 of the paper.
+
+In example 03 the two reads of a pair are joined into one fragment, so
+step 7 counts fragments instead of single reads.
 
 Every script is commented line by line. New to shell scripts? The page
 [How to read the scripts](docs/how_to_read_the_scripts.md) explains the
@@ -225,6 +279,7 @@ only been run with the conda setup, not inside Docker.
 install.sh        installs all software
 01_example_analysis_bacteria/   Salmonella example: script and results
 02_publication_rna_seq_analysis_archaea/   sRNA154 paper: script and results
+03_publication_rna_seq_paired_end_rhizobium/   Rhizobium paper: script and results
 envs/             the two conda environment definitions
 docker/           optional Docker image with the same tools
 docs/             how to read the scripts (for beginners)
