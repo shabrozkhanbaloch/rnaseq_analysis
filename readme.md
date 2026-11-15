@@ -105,8 +105,8 @@ replicates each. Needs about 1 GB of disk space and about 10 minutes.
 bash 01_example_analysis_bacteria/example_01_analysis.sh
 ```
 
-When it ends with `Finished at: ...`, open the folder
-`01_example_analysis_bacteria/results`:
+When it ends with `Finished. The key results are in the folder: results`,
+open the folder `01_example_analysis_bacteria/results`:
 
 | File | What it shows |
 |---|---|

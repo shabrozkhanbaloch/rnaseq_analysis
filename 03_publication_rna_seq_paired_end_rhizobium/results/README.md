@@ -175,7 +175,7 @@ Between 89 and 97 % of the counted fragments come from ribosomal RNA. The
 paper states that ribosomal RNA was removed in the laboratory before
 sequencing; these numbers show that most of it was still there.
 
-What this means for the analysis: of 10 to 28 million read pairs per
+What this means for the analysis: of 10 to 29 million read pairs per
 sample, only 0.3 to 0.8 million fragments measure protein-coding genes.
 That is spread over 6,346 genes, so many genes have only a handful of
 fragments. Small changes cannot be detected with so little data; only
