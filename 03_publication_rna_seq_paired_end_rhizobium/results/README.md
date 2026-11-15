@@ -9,6 +9,8 @@ numbers.
 
 ## The short version
 
+![Overview of example 03: Rhizobium tropici CIAT 899, control, apigenin and salt, paired-end reads; 7 genes changed with apigenin and 134 with salt, at least four-fold with padj below 0.05; the paper's more-active genes are reproduced, most of its less-active genes are not. The numbers are explained in the text below.](figures/00_overview.png)
+
 - **What was compared:** the bacterium *Rhizobium tropici* CIAT 899 grown in
   three ways, two samples (replicates) of each.
   - `control`: normal medium
