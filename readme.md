@@ -17,11 +17,15 @@ Example 02 reruns the RNA-seq analysis of a published paper
 ([Prasse et al. 2017](https://doi.org/10.1080/15476286.2017.1306170)) from
 its public raw reads and checks the answer against the paper.
 
-![Volcano plot of example 02: genes that change when sRNA154 is deleted](02_publication_rna_seq_analysis_archaea/results/figures/08_volcano_plot.png)
+![Summary figure of example 02 with three panels: a volcano plot of the genes that change when sRNA154 is deleted, a comparison with the paper, and the read coverage of six nitrogen genes](02_publication_rna_seq_analysis_archaea/results/figures/10_publication_figure.png)
 
-*Each dot is a gene. Dots far to the left are less active in the mutant
+*a: each dot is a gene. Dots far to the left are less active in the mutant
 without sRNA154, dots far to the right more active; the higher a dot, the
-more certain the change.*
+more certain the change. b: the changes in our run against those printed in
+the paper; dots on the dashed line agree. c: the reads over six nitrogen
+genes, wild type in grey and mutant in green. The
+[results page](02_publication_rna_seq_analysis_archaea/results/README.md)
+explains the figure in full.*
 
 - All **7 of 7** nitrogen-metabolism genes in the paper's Table 1 go down in
   our run too, with fold changes that differ by 0.07 at most.
@@ -31,8 +35,9 @@ more certain the change.*
 - The paper's one RNA-seq figure (Figure 3, read coverage over six
   nitrogen genes) is redrawn from our run with an
   [R script](02_publication_rna_seq_analysis_archaea/plot_gene_coverage.R).
-- The main results are also drawn as one
-  [journal-style figure](02_publication_rna_seq_analysis_archaea/results/figures/10_publication_figure.png).
+- The figure above is drawn by a second
+  [R script](02_publication_rna_seq_analysis_archaea/plot_publication_figure.R)
+  in the format scientific journals ask for.
 - The run uses current software, not the 2017 versions. Every difference
   from the paper's method is listed on the
   [results page](02_publication_rna_seq_analysis_archaea/results/README.md).
