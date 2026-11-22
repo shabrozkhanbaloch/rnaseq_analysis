@@ -427,6 +427,61 @@ Two things to keep in mind when reading the plots:
 - `amtB1`, `nifH` and `nrpA` have few reads (note the scales of 25 to 70),
   so their plots look rougher than those of the highly active genes.
 
+### All main results in one figure
+
+The plots above are drawn by READemption and are good for a first look.
+Scientific journals have their own rules for figures: a fixed width,
+small plain text, colours that colour-blind readers can tell apart, and
+several plots joined into one figure with the letters a, b, c. The script
+[`plot_publication_figure.R`](../plot_publication_figure.R) draws the main
+results of this page once more in that form. It shows nothing new: every
+number comes from the tables in this folder.
+
+![Summary figure of example 02 with three panels: a volcano plot, a comparison with the paper and the read coverage of six nitrogen genes](figures/10_publication_figure.png)
+
+**Deleting sRNA154 lowers the activity of nitrogen-metabolism genes in
+*Methanosarcina mazei*.**
+
+- **a** Every tested gene is a dot (2,771 genes, two samples per strain).
+  Dots to the left are less active in the mutant, dots to the right more
+  active; the higher a dot, the more certain the change. Coloured dots
+  are the genes that changed: padj below 0.05 and at least two-fold. That
+  is 34 less active (blue) and 19 more active (orange). The named genes
+  on the left are nitrogen genes from the paper's Table 1. The named
+  genes on the right are the three that rose most; two of them have no
+  gene name, so their number in the genome annotation is printed.
+- **b** The same change measured twice: by the paper (horizontal) and by
+  our run (vertical), for the 61 genes of the paper's Table S1 that can be
+  compared. A dot on the dashed line has the same fold change in both. The
+  52 filled dots are reproduced, the 9 open circles are not; they sit near
+  1, which means "no change" in our run. The correlation is r = 0.94.
+- **c** Read coverage over six nitrogen genes, as in the paper's Figure 3:
+  wild type in grey, mutant in green, one sample of each (replicate 1).
+  The black arrow marks the gene, and the position is counted from the
+  start of the gene, so every gene is read from left to right. The numbers
+  next to each name are the fold change in our run and, in brackets, in
+  the paper.
+
+Good to know:
+
+- `nrpA` and `nifH` from Table 1 are not in panel a. They have few reads,
+  so DESeq2 gives them no padj (see "Why two genes have no padj" above)
+  and they have no place on a volcano plot. Both are shown in panel c.
+- Panel c shows the same data as the coverage plot in the section before.
+  Only the look differs: the colours, and the position counted from the
+  start of the gene instead of along the genome.
+- The figure is 183 mm wide, the full page width of the journal *Nature*.
+  [`publication_figure.pdf`](publication_figure.pdf) stays sharp at any
+  size and is the file to use for print.
+
+To draw the figure again after a run of the analysis:
+
+```bash
+cd 02_publication_rna_seq_analysis_archaea
+conda activate reademption
+Rscript plot_publication_figure.R
+```
+
 ### Which figures of the paper can be reproduced
 
 The paper has seven figures and three tables in its main text. Most of
@@ -535,6 +590,7 @@ the left.
 | `volcano_plots_log2_fold_change_vs_adjusted_p-value.pdf` | Volcano plots of section 6 |
 | `volcano_plots_log2_fold_change_vs_p-value.pdf` | Volcano plots with the uncorrected p-value |
 | `gene_coverage_wt_vs_mutant.pdf` | Read coverage of six nitrogen genes, the content of the paper's Figure 3 (section 6), made by `plot_gene_coverage.R` |
+| `publication_figure.pdf` | The main results as one journal-style figure (section 6), made by `plot_publication_figure.R` |
 | `figures/` | The pictures shown on this page, made from the PDF files |
 
 ## What to keep in mind
