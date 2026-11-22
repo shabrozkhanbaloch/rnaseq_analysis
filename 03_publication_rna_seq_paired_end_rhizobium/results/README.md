@@ -522,6 +522,71 @@ say:
   tested at all (half of the 482 have fewer than 23 fragments on average).
   Of the 131 switched-on genes, only 7 were not tested.
 
+### All main results in one figure
+
+The plots above are drawn by READemption and are good for a first look.
+Scientific journals have their own rules for figures: a fixed width,
+small plain text, colours that colour-blind readers can tell apart, and
+several plots joined into one figure with the letters a, b, c. The script
+[`plot_publication_figure.R`](../plot_publication_figure.R) draws the main
+results of this page once more in that form. It shows nothing new: every
+number comes from the tables in this folder.
+
+![Summary figure of example 03 with three panels: a volcano plot for apigenin, a volcano plot for salt and a comparison with the paper](figures/11_publication_figure.png)
+
+**Apigenin switches on the nodulation genes of *Rhizobium tropici*
+CIAT 899, and salt switches them on as well.**
+
+- **a** Apigenin against control. Every tested gene is a dot (6,400 genes,
+  two samples per condition). Dots to the right are more active with
+  apigenin; the higher a dot, the more certain the change. Coloured dots
+  are the genes that changed: padj below 0.05 and at least four-fold.
+  There are 7, all more active, and all are nodulation genes. Each one is
+  named.
+- **b** Salt against control, drawn the same way (2,430 genes tested).
+  113 genes are more active (orange) and 21 less active (blue). The 14
+  nodulation genes among them carry a black ring. The strongest genes on
+  each side are named. A name like RS20960 is the gene's number in the
+  genome annotation, RTCIAT899_RS20960, for genes that have no name:
+
+  | Gene | What it makes | Change with salt |
+  |---|---|---|
+  | RS20960 | phytanoyl-CoA dioxygenase family protein | about 30 times more active |
+  | RS02515 | EF-hand domain-containing protein | about 20 times more active |
+  | RS27050 | helix-turn-helix transcriptional regulator | about 10 times less active |
+  | RS27025 | capsular polysaccharide biosynthesis protein | about 9 times less active |
+
+- **c** The same change measured twice: by the paper (horizontal) and by
+  our run (vertical), for the 27 genes of the paper's Tables 1 to 3 that
+  can be compared, once for apigenin and once for salt. A dot on the
+  dashed line has the same fold change in both. The correlation is
+  r = 0.95 in both plots. The three named genes are the ones that differ
+  most from the paper (see "Comparison with the paper: the nodulation
+  genes" above).
+
+Good to know:
+
+- In panel a nearly all grey dots lie flat on the bottom line. That is
+  what the data look like: apart from the 7 genes, apigenin changed
+  nothing that the test could confirm, so almost every other gene has a
+  padj close to 1.
+- Both volcano plots use the same scales, so they can be compared
+  directly: salt changes many more genes than apigenin.
+- The limits of this dataset apply to the figure too: two samples per
+  condition, and more than 90 % ribosomal RNA (see "What to keep in mind"
+  below).
+- The figure is 183 mm wide, the full page width of the journal *Nature*.
+  [`publication_figure.pdf`](publication_figure.pdf) stays sharp at any
+  size and is the file to use for print.
+
+To draw the figure again after a run of the analysis:
+
+```bash
+cd 03_publication_rna_seq_paired_end_rhizobium
+conda activate reademption
+Rscript plot_publication_figure.R
+```
+
 ### Which figures and tables of the paper can be reproduced
 
 | Paper item | What it shows | Made from | Reproduced here? |
@@ -585,6 +650,7 @@ the left.
 | `MA_plots.pdf` | MA plots of section 6, one page per comparison and direction |
 | `volcano_plots_log2_fold_change_vs_adjusted_p-value.pdf` | Volcano plots of section 6 |
 | `volcano_plots_log2_fold_change_vs_p-value.pdf` | Volcano plots with the uncorrected p-value |
+| `publication_figure.pdf` | The main results as one journal-style figure (section 6), made by `plot_publication_figure.R` |
 | `figures/` | The pictures shown on this page, made from the PDF files |
 
 ## What to keep in mind
