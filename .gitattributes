@@ -1,4 +1,4 @@
 # Tell GitHub how to count languages for this repository.
-# The MultiQC reports are HTML files written by a tool, not code written by hand,
-# so they are left out of the language bar at the top of the repo page.
-**/multiqc_report.html linguist-generated=true
+# The HTML files here are reports written by tools (MultiQC), not code written
+# by hand, so they are left out of the language bar at the top of the repo page.
+*.html linguist-generated=true
