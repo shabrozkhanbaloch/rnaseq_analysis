@@ -211,6 +211,9 @@ at r = 0.95, and nearly every gene the paper reports as more active is more
 active in our run too. Most of the genes the paper reports as less active
 with salt are not reproduced; the results page describes this openly.
 
+The main results are also drawn as one
+[journal-style figure](03_publication_rna_seq_paired_end_rhizobium/results/figures/11_publication_figure.png).
+
 Paper: Pérez-Montaño et al. 2016, *BMC Genomics* 17:198,
 [doi:10.1186/s12864-016-2543-3](https://doi.org/10.1186/s12864-016-2543-3).
 Data: public reads, downloaded from the European Nucleotide Archive.
