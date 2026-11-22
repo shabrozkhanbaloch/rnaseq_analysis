@@ -205,7 +205,10 @@ figure <- ggplot(plot_data, aes(x = position, y = coverage)) +
     labs(x = "position on the genome", y = "reads (coverage)", fill = NULL,
          caption = "Black arrow: position and reading direction of the gene") +
     theme_bw() +
-    theme(legend.position = "top", strip.text = element_text(hjust = 0))
+    # plot.margin leaves some room at the right edge (top, right, bottom,
+    # left, in points), so the last number of the axis is not cut off.
+    theme(legend.position = "top", strip.text = element_text(hjust = 0),
+          plot.margin = margin(5.5, 20, 5.5, 5.5))
 
 ggsave("results/gene_coverage_wt_vs_mutant.pdf", figure, width = 11, height = 10)
 ggsave("results/figures/09_gene_coverage_wt_vs_mutant.png", figure,
