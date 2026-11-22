@@ -31,6 +31,8 @@ more certain the change.*
 - The paper's one RNA-seq figure (Figure 3, read coverage over six
   nitrogen genes) is redrawn from our run with an
   [R script](02_publication_rna_seq_analysis_archaea/plot_gene_coverage.R).
+- The main results are also drawn as one
+  [journal-style figure](02_publication_rna_seq_analysis_archaea/results/figures/10_publication_figure.png).
 - The run uses current software, not the 2017 versions. Every difference
   from the paper's method is listed on the
   [results page](02_publication_rna_seq_analysis_archaea/results/README.md).
