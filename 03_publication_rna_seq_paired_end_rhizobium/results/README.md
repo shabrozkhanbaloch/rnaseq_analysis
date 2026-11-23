@@ -517,6 +517,10 @@ say:
   aligner and a different counting program, and it normalises the samples
   differently. With more than 90 % ribosomal RNA in the data, such
   differences can have a large effect.
+- One of these differences was tested and is **not** the cause: counting
+  only the reads that fit one place on the genome, as the paper did, gives
+  practically the same result (113 genes more active and 22 less active
+  with salt, against 113 and 21).
 - Our run has little data per gene (section 4). Of the 482 switched-off
   genes that can be compared, 352 have too few fragments in our run to be
   tested at all (half of the 482 have fewer than 23 fragments on average).
